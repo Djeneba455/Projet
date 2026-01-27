@@ -1,0 +1,14 @@
+import { z } from 'zod'
+
+export const categorySchema = z.object({
+  name: z.string().min(2, 'Le nom doit contenir au moins 2 caractères'),
+  color: z.string().regex(/^#[0-9A-F]{6}$/i, 'Couleur hexadécimale invalide'),
+  description: z.string().optional(),
+})
+
+export const updateCategorySchema = categorySchema.extend({
+  id: z.string(),
+})
+
+export type CategoryInput = z.infer<typeof categorySchema>
+export type UpdateCategoryInput = z.infer<typeof updateCategorySchema>

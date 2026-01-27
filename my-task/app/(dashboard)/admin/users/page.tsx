@@ -1,0 +1,32 @@
+import { getUsers } from '@/app/actions/users'
+import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
+import { getRoleLabel } from '@/lib/utils'
+import { User, Plus, Trash2 } from 'lucide-react'
+import { UserManagement } from '@/components/admin/user-management'
+
+export const dynamic = 'force-dynamic'
+
+export default async function UsersPage() {
+  const usersResult = await getUsers()
+  const users = usersResult.users || []
+
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex justify-between items-center">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+            Gestion des utilisateurs
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400 mt-1">
+            {users.length} utilisateur{users.length !== 1 ? 's' : ''}
+          </p>
+        </div>
+      </div>
+
+      {/* User Management Component */}
+      <UserManagement users={users} />
+    </div>
+  )
+}

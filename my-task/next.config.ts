@@ -1,7 +1,15 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '2mb',
+    },
+  },
+  // Disable static optimization for pages using auth
+  typescript: {
+    ignoreBuildErrors: false,
+  },
 };
 
 export default nextConfig;
