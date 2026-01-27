@@ -1,0 +1,3 @@
+# Force Vercel à régénérer le Prisma Client à chaque build
+node_modules/.prisma/
+.next/
