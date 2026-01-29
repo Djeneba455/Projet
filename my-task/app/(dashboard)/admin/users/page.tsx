@@ -4,10 +4,14 @@ import { Badge } from '@/components/ui/badge'
 import { getRoleLabel } from '@/lib/utils'
 import { User, Plus, Trash2 } from 'lucide-react'
 import { UserManagement } from '@/components/admin/user-management'
+import { requireAuth } from '@/lib/auth-helpers'
 
 export const dynamic = 'force-dynamic'
 
 export default async function UsersPage() {
+  // Protect this page - only ADMIN can access
+  await requireAuth(['ADMIN'])
+  
   const usersResult = await getUsers()
   const users = usersResult.users || []
 

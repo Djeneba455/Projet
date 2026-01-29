@@ -1,10 +1,14 @@
 import { getStudents } from '@/app/actions/users'
 import { getCategories } from '@/app/actions/categories'
 import { TaskForm } from '@/components/task/task-form'
+import { requireAuth } from '@/lib/auth-helpers'
 
 export const dynamic = 'force-dynamic'
 
 export default async function TeacherAssignmentsPage() {
+  // Protect this page - only TEACHER and ADMIN can access
+  await requireAuth(['TEACHER', 'ADMIN'])
+  
   const studentsResult = await getStudents()
   const categoriesResult = await getCategories()
 
