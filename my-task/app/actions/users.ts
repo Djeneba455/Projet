@@ -24,6 +24,11 @@ export async function getUsers() {
         email: true,
         role: true,
         createdAt: true,
+        classe: {
+          select: {
+            name: true,
+          },
+        },
         _count: {
           select: {
             createdTasks: true,
@@ -157,6 +162,7 @@ export async function createUser(data: FormData) {
     const email = data.get('email') as string
     const password = data.get('password') as string
     const role = (data.get('role') as 'STUDENT' | 'TEACHER' | 'ADMIN') || 'STUDENT'
+    const classeId = data.get('classeId') as string || null
 
     // Check if user already exists
     const existingUser = await prisma.user.findUnique({
@@ -177,6 +183,7 @@ export async function createUser(data: FormData) {
         email,
         password: hashedPassword,
         role,
+        classeId: classeId || undefined,
       },
     })
 

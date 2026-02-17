@@ -1,4 +1,5 @@
 import { getUsers } from '@/app/actions/users'
+import { getClasses } from '@/app/actions/classes'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { getRoleLabel } from '@/lib/utils'
@@ -13,7 +14,9 @@ export default async function UsersPage() {
   await requireAuth(['ADMIN'])
   
   const usersResult = await getUsers()
+  const classesResult = await getClasses()
   const users = usersResult.users || []
+  const classes = classesResult.classes || []
 
   return (
     <div className="space-y-6">
@@ -30,7 +33,7 @@ export default async function UsersPage() {
       </div>
 
       {/* User Management Component */}
-      <UserManagement users={users} />
+      <UserManagement users={users} classes={classes} />
     </div>
   )
 }

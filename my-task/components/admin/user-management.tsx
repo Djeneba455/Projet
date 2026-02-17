@@ -13,14 +13,16 @@ import { Trash2, Edit, Plus } from 'lucide-react'
 
 interface UserManagementProps {
   users: any[]
+  classes: any[]
 }
 
-export function UserManagement({ users }: UserManagementProps) {
+export function UserManagement({ users, classes }: UserManagementProps) {
   const router = useRouter()
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
   const [editingUser, setEditingUser] = useState<any>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
+  const [selectedRole, setSelectedRole] = useState<string>('STUDENT')
 
   const handleCreateUser = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -35,6 +37,7 @@ export function UserManagement({ users }: UserManagementProps) {
       setIsLoading(false)
     } else {
       setIsCreateModalOpen(false)
+      setSelectedRole('STUDENT')
       router.refresh()
       setIsLoading(false)
     }
@@ -77,6 +80,9 @@ export function UserManagement({ users }: UserManagementProps) {
                   Rôle
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  Classe
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                   Tâches créées
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
@@ -112,6 +118,15 @@ export function UserManagement({ users }: UserManagementProps) {
                     </Select>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                    {user.classe ? (
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400">
+                        {user.classe.name}
+                      </span>
+                    ) : (
+                      <span className="text-gray-400 dark:text-gray-500">-</span>
+                    )}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                     {user._count?.createdTasks || 0}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
@@ -139,6 +154,7 @@ export function UserManagement({ users }: UserManagementProps) {
         onClose={() => {
           setIsCreateModalOpen(false)
           setError('')
+          setSelectedRole('STUDENT')
         }}
         title="Créer un utilisateur"
         size="md"
@@ -175,12 +191,32 @@ export function UserManagement({ users }: UserManagementProps) {
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Rôle
             </label>
-            <Select name="role" defaultValue="STUDENT">
+            <Select 
+              name="role" 
+              defaultValue="STUDENT"
+              onChange={(e) => setSelectedRole(e.target.value)}
+            >
               <option value="STUDENT">Étudiant</option>
               <option value="TEACHER">Enseignant</option>
               <option value="ADMIN">Admin</option>
             </Select>
           </div>
+
+          {selectedRole === 'STUDENT' && classes.length > 0 && (
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Classe (optionnel)
+              </label>
+              <Select name="classeId">
+                <option value="">Aucune classe</option>
+                {classes.map((classe) => (
+                  <option key={classe.id} value={classe.id}>
+                    {classe.name}
+                  </option>
+                ))}
+              </Select>
+            </div>
+          )}
 
           <div className="flex gap-3 pt-4">
             <Button type="submit" disabled={isLoading} className="flex-1">
@@ -189,7 +225,10 @@ export function UserManagement({ users }: UserManagementProps) {
             <Button
               type="button"
               variant="outline"
-              onClick={() => setIsCreateModalOpen(false)}
+              onClick={() => {
+                setIsCreateModalOpen(false)
+                setSelectedRole('STUDENT')
+              }}
             >
               Annuler
             </Button>
