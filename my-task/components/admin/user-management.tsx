@@ -7,7 +7,7 @@ import { Modal } from '@/components/ui/modal'
 import { Input } from '@/components/ui/input'
 import { Select } from '@/components/ui/select'
 import { getRoleLabel } from '@/lib/utils'
-import { createUser, updateUserRole, deleteUser } from '@/app/actions/users'
+import { createUser, updateUser, updateUserRole, deleteUser } from '@/app/actions/users'
 import { useRouter } from 'next/navigation'
 import { Trash2, Edit, Plus } from 'lucide-react'
 
@@ -23,6 +23,7 @@ export function UserManagement({ users, classes }: UserManagementProps) {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
   const [selectedRole, setSelectedRole] = useState<string>('STUDENT')
+  const [editingRole, setEditingRole] = useState<string>('STUDENT')
 
   const handleCreateUser = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -38,6 +39,24 @@ export function UserManagement({ users, classes }: UserManagementProps) {
     } else {
       setIsCreateModalOpen(false)
       setSelectedRole('STUDENT')
+      router.refresh()
+      setIsLoading(false)
+    }
+  }
+
+  const handleUpdateUser = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    setIsLoading(true)
+    setError('')
+
+    const formData = new FormData(e.currentTarget)
+    const result = await updateUser(editingUser.id, formData)
+
+    if (result.error) {
+      setError(result.error)
+      setIsLoading(false)
+    } else {
+      setEditingUser(null)
       router.refresh()
       setIsLoading(false)
     }
@@ -133,13 +152,25 @@ export function UserManagement({ users, classes }: UserManagementProps) {
                     {user._count?.assignedTasks || 0}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <Button
-                      variant="destructive"
-                      size="sm"
-                      onClick={() => handleDeleteUser(user.id)}
-                    >
-                      <Trash2 size={16} />
-                    </Button>
+                    <div className="flex gap-2 justify-end">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => {
+                          setEditingUser(user)
+                          setEditingRole(user.role)
+                        }}
+                      >
+                        <Edit size={16} />
+                      </Button>
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        onClick={() => handleDeleteUser(user.id)}
+                      >
+                        <Trash2 size={16} />
+                      </Button>
+                    </div>
                   </td>
                 </tr>
               ))}
@@ -239,6 +270,105 @@ export function UserManagement({ users, classes }: UserManagementProps) {
             </Button>
           </div>
         </form>
+      </Modal>
+
+      {/* Edit User Modal */}
+      <Modal
+        isOpen={!!editingUser}
+        onClose={() => {
+          setEditingUser(null)
+          setError('')
+          setEditingRole('STUDENT')
+        }}
+        title="Modifier l'utilisateur"
+        size="md"
+      >
+        {editingUser && (
+          <form onSubmit={handleUpdateUser} className="space-y-4">
+            {error && (
+              <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-600 dark:bg-red-900/20 dark:border-red-800 dark:text-red-400">
+                {error}
+              </div>
+            )}
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Nom complet <span className="text-red-500">*</span>
+              </label>
+              <Input
+                name="name"
+                required
+                defaultValue={editingUser.name}
+                placeholder="Jean Dupont"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Email <span className="text-red-500">*</span>
+              </label>
+              <Input
+                name="email"
+                type="email"
+                required
+                defaultValue={editingUser.email}
+                placeholder="jean@example.com"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Rôle
+              </label>
+              <Select
+                name="role"
+                defaultValue={editingUser.role}
+                onChange={(e) => setEditingRole(e.target.value)}
+              >
+                <option value="STUDENT">Étudiant</option>
+                <option value="TEACHER">Enseignant</option>
+                <option value="ADMIN">Admin</option>
+              </Select>
+            </div>
+
+            {((editingRole || editingUser.role) === 'STUDENT' || (editingRole || editingUser.role) === 'TEACHER') && classes.length > 0 && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  Classe {(editingRole || editingUser.role) === 'TEACHER' ? '(classe principale)' : ''}
+                </label>
+                <Select name="classeId" defaultValue={editingUser.classeId || ''}>
+                  <option value="">Aucune classe</option>
+                  {classes.map((classe) => (
+                    <option key={classe.id} value={classe.id}>
+                      {classe.name}
+                    </option>
+                  ))}
+                </Select>
+                {(editingRole || editingUser.role) === 'TEACHER' && (
+                  <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                    Classe principale de l'enseignant
+                  </p>
+                )}
+              </div>
+            )}
+
+            <div className="flex gap-3 pt-4">
+              <Button type="submit" disabled={isLoading} className="flex-1">
+                {isLoading ? 'Mise à jour...' : 'Enregistrer'}
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => {
+                  setEditingUser(null)
+                  setEditingRole('STUDENT')
+                }}
+              >
+                Annuler
+              </Button>
+            </div>
+          </form>
+        )}
       </Modal>
     </>
   )

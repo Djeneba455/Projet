@@ -24,6 +24,7 @@ export async function getUsers() {
         email: true,
         role: true,
         createdAt: true,
+        classeId: true,
         classe: {
           select: {
             name: true,
@@ -192,5 +193,67 @@ export async function createUser(data: FormData) {
   } catch (error) {
     console.error('Create user error:', error)
     return { error: 'Erreur lors de la création de l\'utilisateur' }
+  }
+}
+
+export async function updateUser(userId: string, data: FormData) {
+  try {
+    const session = await auth()
+    if (!session?.user) {
+      return { error: 'Non authentifié' }
+    }
+
+    // Only admins can update users
+    if (session.user.role !== 'ADMIN') {
+      return { error: 'Accès non autorisé' }
+    }
+
+    const name = data.get('name') as string
+    const email = data.get('email') as string
+    const role = data.get('role') as 'STUDENT' | 'TEACHER' | 'ADMIN'
+    const classeId = data.get('classeId') as string
+
+    // Cannot change own role to non-admin
+    if (userId === session.user.id && role !== 'ADMIN') {
+      return { error: 'Vous ne pouvez pas retirer vos propres droits d\'administrateur' }
+    }
+
+    // Check if email is already used by another user
+    if (email) {
+      const existingUser = await prisma.user.findFirst({
+        where: {
+          email,
+          id: { not: userId },
+        },
+      })
+
+      if (existingUser) {
+        return { error: 'Cet email est déjà utilisé par un autre utilisateur' }
+      }
+    }
+
+    // Build update data
+    const updateData: any = {}
+    if (name) updateData.name = name
+    if (email) updateData.email = email
+    if (role) updateData.role = role
+    
+    // Handle classeId: empty string means remove class
+    if (classeId === '') {
+      updateData.classeId = null
+    } else if (classeId) {
+      updateData.classeId = classeId
+    }
+
+    const user = await prisma.user.update({
+      where: { id: userId },
+      data: updateData,
+    })
+
+    revalidatePath('/admin/users')
+    return { success: true, user }
+  } catch (error) {
+    console.error('Update user error:', error)
+    return { error: 'Erreur lors de la mise à jour de l\'utilisateur' }
   }
 }
