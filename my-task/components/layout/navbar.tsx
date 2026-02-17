@@ -1,8 +1,9 @@
-import { auth, signOut } from '@/lib/auth'
+import { auth } from '@/lib/auth'
 import { Button } from '@/components/ui/button'
-import { LogOut, User } from 'lucide-react'
+import { User } from 'lucide-react'
 import { NotificationBell } from './notification-bell'
 import { ThemeToggle } from './theme-toggle'
+import { LogoutButton } from './logout-button'
 import { getRoleLabel } from '@/lib/utils'
 import Link from 'next/link'
 
@@ -46,18 +47,9 @@ export async function Navbar() {
                   </Button>
                 </Link>
 
-                <form
-                  action={async () => {
-                    'use server'
-                    await signOut({ redirectTo: '/login' })
-                  }}
-                  className="hidden sm:block"
-                >
-                  <Button variant="outline" size="sm" type="submit">
-                    <LogOut size={16} className="mr-2" />
-                    <span className="hidden md:inline">Déconnexion</span>
-                  </Button>
-                </form>
+                <div className="hidden sm:block">
+                  <LogoutButton />
+                </div>
               </>
             )}
           </div>
