@@ -126,10 +126,16 @@ export function KanbanBoard({ initialTasks }: KanbanBoardProps) {
       onDragOver={handleDragOver}
       onDragEnd={handleDragEnd}
     >
-      <div className="flex gap-6 overflow-x-auto pb-4">
-        <KanbanColumn status="TODO" tasks={todoTasks} title="À faire" />
-        <KanbanColumn status="IN_PROGRESS" tasks={inProgressTasks} title="En cours" />
-        <KanbanColumn status="COMPLETED" tasks={completedTasks} title="Terminé" />
+      <div className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory -mx-4 px-4 sm:-mx-6 sm:px-6">
+        <div className="min-w-[280px] sm:min-w-[320px] snap-start">
+          <KanbanColumn status="TODO" tasks={todoTasks} title="À faire" />
+        </div>
+        <div className="min-w-[280px] sm:min-w-[320px] snap-start">
+          <KanbanColumn status="IN_PROGRESS" tasks={inProgressTasks} title="En cours" />
+        </div>
+        <div className="min-w-[280px] sm:min-w-[320px] snap-start">
+          <KanbanColumn status="COMPLETED" tasks={completedTasks} title="Terminé" />
+        </div>
       </div>
 
       <DragOverlay>

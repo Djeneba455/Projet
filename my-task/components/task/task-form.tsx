@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Select } from '@/components/ui/select'
+import { SearchableSelect } from '@/components/ui/searchable-select'
 import { createTask, updateTask } from '@/app/actions/tasks'
 import { useRouter } from 'next/navigation'
 
@@ -27,6 +28,8 @@ export function TaskForm({ task, categories, students, onSuccess, onCancel }: Ta
   const {
     register,
     handleSubmit,
+    setValue,
+    watch,
     formState: { errors },
   } = useForm<TaskInput>({
     resolver: zodResolver(taskSchema),
@@ -45,8 +48,11 @@ export function TaskForm({ task, categories, students, onSuccess, onCancel }: Ta
       : {
           status: 'TODO',
           priority: 'MEDIUM',
+          assigneeId: '',
         },
   })
+
+  const assigneeId = watch('assigneeId')
 
   const onSubmit = async (data: TaskInput) => {
     setIsLoading(true)
@@ -193,14 +199,17 @@ export function TaskForm({ task, categories, students, onSuccess, onCancel }: Ta
           >
             Assigner à
           </label>
-          <Select id="assigneeId" {...register('assigneeId')}>
-            <option value="">Non assigné</option>
-            {students.map((student) => (
-              <option key={student.id} value={student.id}>
-                {student.name}
-              </option>
-            ))}
-          </Select>
+          <SearchableSelect
+            options={students.map((student) => ({
+              value: student.id,
+              label: student.classe
+                ? `${student.name} (${student.classe.name})`
+                : student.name,
+            }))}
+            value={assigneeId || ''}
+            onChange={(value) => setValue('assigneeId', value)}
+            placeholder="Rechercher un étudiant..."
+          />
         </div>
       )}
 

@@ -63,10 +63,16 @@ export async function getStudents() {
         id: true,
         name: true,
         email: true,
+        classe: {
+          select: {
+            name: true,
+          },
+        },
       },
-      orderBy: {
-        name: 'asc',
-      },
+      orderBy: [
+        { classe: { name: 'asc' } },
+        { name: 'asc' },
+      ],
     })
 
     return { students }

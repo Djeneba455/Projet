@@ -51,6 +51,9 @@ export async function registerAction(formData: FormData) {
     // Hash password
     const hashedPassword = await hash(validatedData.password, 10)
 
+    // Get classeId from form
+    const classeId = formData.get('classeId') as string || null
+
     // Create user
     await prisma.user.create({
       data: {
@@ -58,6 +61,7 @@ export async function registerAction(formData: FormData) {
         email: validatedData.email,
         password: hashedPassword,
         role: 'STUDENT', // Default role
+        classeId: classeId || undefined,
       },
     })
 

@@ -34,14 +34,18 @@ model User {
   email         String    @unique
   password      String
   role          Role      @default(STUDENT)
+  classeId      String?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   
+  classe        Classe?   @relation(fields: [classeId], references: [id], onDelete: SetNull)
   createdTasks  Task[]    @relation("TaskCreator")
   assignedTasks Task[]    @relation("TaskAssignee")
   notifications Notification[]
   sessions      Session[]
   accounts      Account[]
+  
+  @@index([classeId])
 }
 
 model Task {
@@ -78,6 +82,15 @@ model Category {
   createdAt   DateTime @default(now())
   
   tasks       Task[]
+}
+
+model Classe {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  description String?
+  createdAt   DateTime @default(now())
+  
+  students    User[]
 }
 
 model Notification {

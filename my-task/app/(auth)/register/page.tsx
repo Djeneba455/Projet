@@ -1,14 +1,26 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { registerAction } from '@/app/actions/auth'
+import { getClasses } from '@/app/actions/classes'
 
 export default function RegisterPage() {
   const router = useRouter()
   const [error, setError] = useState<string>('')
   const [isLoading, setIsLoading] = useState(false)
+  const [classes, setClasses] = useState<any[]>([])
+
+  useEffect(() => {
+    async function loadClasses() {
+      const result = await getClasses()
+      if (result.classes) {
+        setClasses(result.classes)
+      }
+    }
+    loadClasses()
+  }, [])
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -121,6 +133,29 @@ export default function RegisterPage() {
                 placeholder="••••••••"
               />
             </div>
+
+            {classes.length > 0 && (
+              <div>
+                <label
+                  htmlFor="classeId"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                >
+                  Classe (optionnel)
+                </label>
+                <select
+                  id="classeId"
+                  name="classeId"
+                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition"
+                >
+                  <option value="">Aucune classe</option>
+                  {classes.map((classe) => (
+                    <option key={classe.id} value={classe.id}>
+                      {classe.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
 
             <button
               type="submit"

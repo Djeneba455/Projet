@@ -23,7 +23,7 @@ export function KanbanColumn({ status, tasks, title }: KanbanColumnProps) {
   }
 
   return (
-    <div className="flex flex-col min-w-[300px] max-w-[350px]">
+    <div className="flex flex-col w-full">
       {/* Header */}
       <div className={`${colorClasses[status]} rounded-t-lg px-4 py-3 border-b-2`}>
         <div className="flex items-center justify-between">
