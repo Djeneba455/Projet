@@ -202,10 +202,10 @@ export function UserManagement({ users, classes }: UserManagementProps) {
             </Select>
           </div>
 
-          {selectedRole === 'STUDENT' && classes.length > 0 && (
+          {(selectedRole === 'STUDENT' || selectedRole === 'TEACHER') && classes.length > 0 && (
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Classe (optionnel)
+                Classe {selectedRole === 'TEACHER' ? '(classe principale)' : '(optionnel)'}
               </label>
               <Select name="classeId">
                 <option value="">Aucune classe</option>
@@ -215,6 +215,11 @@ export function UserManagement({ users, classes }: UserManagementProps) {
                   </option>
                 ))}
               </Select>
+              {selectedRole === 'TEACHER' && (
+                <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                  Classe principale de l'enseignant
+                </p>
+              )}
             </div>
           )}
 

@@ -88,13 +88,13 @@ export function ProfileForm({ user, classes }: ProfileFormProps) {
           />
         </div>
 
-        {user.role === 'STUDENT' && classes.length > 0 && (
+        {(user.role === 'STUDENT' || user.role === 'TEACHER') && classes.length > 0 && (
           <div>
             <label
               htmlFor="classeId"
               className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
             >
-              Classe
+              Classe {user.role === 'TEACHER' ? '(classe principale)' : ''}
             </label>
             <Select id="classeId" name="classeId" defaultValue={user.classeId || ''}>
               <option value="">Aucune classe</option>
@@ -104,6 +104,11 @@ export function ProfileForm({ user, classes }: ProfileFormProps) {
                 </option>
               ))}
             </Select>
+            {user.role === 'TEACHER' && (
+              <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                Votre classe principale d'enseignement
+              </p>
+            )}
           </div>
         )}
 

@@ -69,6 +69,7 @@ async function main() {
       name: 'Prof. Martin',
       password: teacherPassword,
       role: 'TEACHER',
+      classeId: classeLicence1.id, // Professeur principal de Licence 1 Info
     },
   })
 
@@ -80,6 +81,7 @@ async function main() {
       name: 'Prof. Dubois',
       password: teacherPassword,
       role: 'TEACHER',
+      classeId: classe6A.id, // Professeur principal de 6ème A
     },
   })
 
