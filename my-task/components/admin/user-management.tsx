@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, Fragment } from 'react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Modal } from '@/components/ui/modal'
@@ -77,7 +77,7 @@ export function UserManagement({ users, classes }: UserManagementProps) {
   }
 
   return (
-    <>
+    <Fragment>
       {/* Create Button */}
       <div className="mb-4">
         <Button onClick={() => setIsCreateModalOpen(true)} className="w-full sm:w-auto">
@@ -270,7 +270,7 @@ export function UserManagement({ users, classes }: UserManagementProps) {
 
           <div className="flex flex-col sm:flex-row gap-3 pt-4">
             <Button type="submit" disabled={isLoading} className="flex-1 w-full sm:w-auto">
-              {isLoading ? 'Création...' : 'Créer l\'utilisateur'}
+              {isLoading ? 'Création...' : "Créer l'utilisateur"}
             </Button>
             <Button
               type="button"
@@ -386,6 +386,6 @@ export function UserManagement({ users, classes }: UserManagementProps) {
           </form>
         )}
       </Modal>
-    </>
+    </Fragment>
   )
 }
