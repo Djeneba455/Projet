@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, Fragment } from 'react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Modal } from '@/components/ui/modal'
@@ -77,7 +77,7 @@ export function UserManagement({ users, classes }: UserManagementProps) {
   }
 
   return (
-    <>
+    <Fragment>
       {/* Create Button */}
       <div className="mb-4">
         <Button onClick={() => setIsCreateModalOpen(true)} className="w-full sm:w-auto">
@@ -288,17 +288,17 @@ export function UserManagement({ users, classes }: UserManagementProps) {
       </Modal>
 
       {/* Edit User Modal */}
-      <Modal
-        isOpen={!!editingUser}
-        onClose={() => {
-          setEditingUser(null)
-          setError('')
-          setEditingRole('STUDENT')
-        }}
-        title="Modifier l'utilisateur"
-        size="md"
-      >
-        {editingUser && (
+      {editingUser && (
+        <Modal
+          isOpen={!!editingUser}
+          onClose={() => {
+            setEditingUser(null)
+            setError('')
+            setEditingRole('STUDENT')
+          }}
+          title="Modifier l'utilisateur"
+          size="md"
+        >
           <form onSubmit={handleUpdateUser} className="space-y-4">
             {error && (
               <div className="p-3 bg-red-900/20 border border-red-800 light:bg-red-50 light:border-red-200 rounded-lg text-sm text-red-400 light:text-red-600">
@@ -384,9 +384,9 @@ export function UserManagement({ users, classes }: UserManagementProps) {
               </Button>
             </div>
           </form>
-        )}
-      </Modal>
-    </>
+        </Modal>
+      )}
+    </Fragment>
   )
 }
 
