@@ -191,6 +191,7 @@ export function UserManagement({ users, classes }: UserManagementProps) {
             </tbody>
           </table>
         </div>
+        </div>
       </div>
 
       {/* Create User Modal */}
@@ -288,17 +289,17 @@ export function UserManagement({ users, classes }: UserManagementProps) {
       </Modal>
 
       {/* Edit User Modal */}
-      {editingUser && (
-        <Modal
-          isOpen={!!editingUser}
-          onClose={() => {
-            setEditingUser(null)
-            setError('')
-            setEditingRole('STUDENT')
-          }}
-          title="Modifier l'utilisateur"
-          size="md"
-        >
+      <Modal
+        isOpen={!!editingUser}
+        onClose={() => {
+          setEditingUser(null)
+          setError('')
+          setEditingRole('STUDENT')
+        }}
+        title="Modifier l'utilisateur"
+        size="md"
+      >
+        {editingUser ? (
           <form onSubmit={handleUpdateUser} className="space-y-4">
             {error && (
               <div className="p-3 bg-red-900/20 border border-red-800 light:bg-red-50 light:border-red-200 rounded-lg text-sm text-red-400 light:text-red-600">
@@ -384,8 +385,8 @@ export function UserManagement({ users, classes }: UserManagementProps) {
               </Button>
             </div>
           </form>
-        </Modal>
-      )}
+        ) : null}
+      </Modal>
     </Fragment>
   )
 }
