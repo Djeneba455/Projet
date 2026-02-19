@@ -10,12 +10,12 @@ interface ThemeContextType {
 }
 
 export const ThemeContext = createContext<ThemeContextType>({
-  theme: 'light',
+  theme: 'dark',
   toggleTheme: () => {},
 })
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState<Theme>('light')
+  const [theme, setTheme] = useState<Theme>('dark')
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
@@ -23,29 +23,42 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     // Load theme from localStorage
     const savedTheme = localStorage.getItem('theme') as Theme | null
     
-    if (savedTheme) {
+    if (savedTheme && (savedTheme === 'light' || savedTheme === 'dark')) {
       setTheme(savedTheme)
-      document.documentElement.classList.toggle('dark', savedTheme === 'dark')
+      if (savedTheme === 'light') {
+        document.documentElement.setAttribute('data-theme', 'light')
+        document.documentElement.classList.add('light')
+      } else {
+        document.documentElement.removeAttribute('data-theme')
+        document.documentElement.classList.remove('light')
+      }
     } else {
-      // Detect system preference
-      const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-      setTheme(isDark ? 'dark' : 'light')
-      document.documentElement.classList.toggle('dark', isDark)
+      // Mode sombre par défaut (pas de préférence système)
+      setTheme('dark')
+      document.documentElement.removeAttribute('data-theme')
+      document.documentElement.classList.remove('light')
     }
   }, [])
 
   const toggleTheme = () => {
-    const newTheme = theme === 'light' ? 'dark' : 'light'
-    setTheme(newTheme)
-    localStorage.setItem('theme', newTheme)
-    document.documentElement.classList.toggle('dark', newTheme === 'dark')
+    setTheme((currentTheme) => {
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark'
+      localStorage.setItem('theme', newTheme)
+      
+      // Update DOM attributes
+      if (newTheme === 'light') {
+        document.documentElement.setAttribute('data-theme', 'light')
+        document.documentElement.classList.add('light')
+      } else {
+        document.documentElement.removeAttribute('data-theme')
+        document.documentElement.classList.remove('light')
+      }
+      
+      return newTheme
+    })
   }
 
-  // Prevent flash of unstyled content
-  if (!mounted) {
-    return <>{children}</>
-  }
-
+  // Always provide the context, even before mount
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
       {children}

@@ -49,26 +49,27 @@ export function TaskFilters({ categories, students }: TaskFiltersProps) {
   return (
     <div className="space-y-4">
       {/* Search Bar */}
-      <div className="flex gap-2">
+      <div className="flex flex-col sm:flex-row gap-2">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 light:text-gray-400" size={18} />
           <Input
             type="text"
             placeholder="Rechercher une tâche..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && applyFilters()}
-            className="pl-10"
+            className="pl-10 w-full"
           />
         </div>
         <Button
           type="button"
           variant="outline"
           onClick={() => setShowFilters(!showFilters)}
-          className="flex items-center gap-2"
+          className="flex items-center justify-center gap-2 w-full sm:w-auto"
         >
           <Filter size={18} />
-          Filtres
+          <span className="hidden sm:inline">Filtres</span>
+          <span className="sm:hidden">Filtres</span>
           {hasActiveFilters && (
             <span className="bg-blue-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
               !
@@ -79,10 +80,10 @@ export function TaskFilters({ categories, students }: TaskFiltersProps) {
 
       {/* Advanced Filters */}
       {showFilters && (
-        <div className="p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg border border-gray-200 dark:border-gray-700 space-y-4">
+        <div className="p-4 bg-gray-800/50 light:bg-gray-50 rounded-lg border border-gray-700 light:border-gray-200 space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-gray-300 light:text-gray-700 mb-1">
                 Statut
               </label>
               <Select value={status} onChange={(e) => setStatus(e.target.value)}>
@@ -94,7 +95,7 @@ export function TaskFilters({ categories, students }: TaskFiltersProps) {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-gray-300 light:text-gray-700 mb-1">
                 Priorité
               </label>
               <Select value={priority} onChange={(e) => setPriority(e.target.value)}>
@@ -107,7 +108,7 @@ export function TaskFilters({ categories, students }: TaskFiltersProps) {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-gray-300 light:text-gray-700 mb-1">
                 Catégorie
               </label>
               <Select value={categoryId} onChange={(e) => setCategoryId(e.target.value)}>
@@ -122,7 +123,7 @@ export function TaskFilters({ categories, students }: TaskFiltersProps) {
 
             {students && students.length > 0 && (
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-gray-300 light:text-gray-700 mb-1">
                   Assigné à
                 </label>
                 <Select value={assigneeId} onChange={(e) => setAssigneeId(e.target.value)}>
@@ -137,12 +138,12 @@ export function TaskFilters({ categories, students }: TaskFiltersProps) {
             )}
           </div>
 
-          <div className="flex gap-2">
-            <Button onClick={applyFilters} size="sm">
+          <div className="flex flex-col sm:flex-row gap-2">
+            <Button onClick={applyFilters} size="sm" className="w-full sm:w-auto">
               Appliquer les filtres
             </Button>
             {hasActiveFilters && (
-              <Button onClick={clearFilters} variant="outline" size="sm">
+              <Button onClick={clearFilters} variant="outline" size="sm" className="w-full sm:w-auto">
                 <X size={16} className="mr-1" />
                 Réinitialiser
               </Button>

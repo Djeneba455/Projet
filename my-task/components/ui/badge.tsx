@@ -11,15 +11,15 @@ export function Badge({ className, variant = 'default', ...props }: BadgeProps) 
       className={cn(
         'inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold transition-colors',
         {
-          'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400':
+          'bg-blue-900/30 text-blue-400 light:bg-blue-100 light:text-blue-800':
             variant === 'default',
-          'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-400':
+          'bg-gray-700 text-gray-400 light:bg-gray-100 light:text-gray-800':
             variant === 'secondary',
-          'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400':
+          'bg-green-900/30 text-green-400 light:bg-green-100 light:text-green-800':
             variant === 'success',
-          'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400':
+          'bg-yellow-900/30 text-yellow-400 light:bg-yellow-100 light:text-yellow-800':
             variant === 'warning',
-          'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400':
+          'bg-red-900/30 text-red-400 light:bg-red-100 light:text-red-800':
             variant === 'error',
         },
         className

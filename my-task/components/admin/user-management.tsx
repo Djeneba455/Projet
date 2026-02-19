@@ -80,79 +80,91 @@ export function UserManagement({ users, classes }: UserManagementProps) {
     <>
       {/* Create Button */}
       <div className="mb-4">
-        <Button onClick={() => setIsCreateModalOpen(true)}>
+        <Button onClick={() => setIsCreateModalOpen(true)} className="w-full sm:w-auto">
           <Plus size={18} className="mr-2" />
           Nouvel utilisateur
         </Button>
       </div>
 
       {/* Users Table */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead className="bg-gray-50 dark:bg-gray-700">
+      <div className="bg-gray-800 light:bg-white rounded-xl shadow-sm border border-gray-700 light:border-gray-200 overflow-hidden">
+        <div className="overflow-x-auto -mx-4 sm:mx-0">
+          <div className="inline-block min-w-full align-middle">
+            <table className="w-full min-w-[800px]">
+            <thead className="bg-gray-700 light:bg-gray-50">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-400 light:text-gray-500 uppercase tracking-wider">
                   Utilisateur
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-400 light:text-gray-500 uppercase tracking-wider">
                   Rôle
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-400 light:text-gray-500 uppercase tracking-wider hidden md:table-cell">
                   Classe
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-400 light:text-gray-500 uppercase tracking-wider hidden lg:table-cell">
                   Tâches créées
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-400 light:text-gray-500 uppercase tracking-wider hidden lg:table-cell">
                   Tâches assignées
                 </th>
-                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                <th className="px-4 sm:px-6 py-3 text-right text-xs font-medium text-gray-400 light:text-gray-500 uppercase tracking-wider">
                   Actions
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+            <tbody className="divide-y divide-gray-700 light:divide-gray-200">
               {users.map((user) => (
-                <tr key={user.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/50">
-                  <td className="px-6 py-4 whitespace-nowrap">
+                <tr key={user.id} className="hover:bg-gray-700/50 light:hover:bg-gray-50">
+                  <td className="px-4 sm:px-6 py-4">
                     <div>
-                      <div className="font-medium text-gray-900 dark:text-white">
+                      <div className="font-medium text-white light:text-gray-900">
                         {user.name}
                       </div>
-                      <div className="text-sm text-gray-500 dark:text-gray-400">
+                      <div className="text-sm text-gray-400 light:text-gray-500 truncate max-w-[200px]">
                         {user.email}
+                      </div>
+                      {/* Mobile: Show classe and stats */}
+                      <div className="md:hidden mt-2 space-y-1">
+                        {user.classe && (
+                          <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-900/30 text-blue-400 light:bg-blue-100 light:text-blue-800">
+                            {user.classe.name}
+                          </span>
+                        )}
+                        <div className="text-xs text-gray-400 light:text-gray-500">
+                          Créées: {user._count?.createdTasks || 0} | Assignées: {user._count?.assignedTasks || 0}
+                        </div>
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
+                  <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
                     <Select
                       value={user.role}
                       onChange={(e) => handleUpdateRole(user.id, e.target.value)}
-                      className="w-auto"
+                      className="w-full sm:w-auto min-w-[120px]"
                     >
                       <option value="STUDENT">Étudiant</option>
                       <option value="TEACHER">Enseignant</option>
                       <option value="ADMIN">Admin</option>
                     </Select>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                  <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-400 light:text-gray-500 hidden md:table-cell">
                     {user.classe ? (
-                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400">
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-900/30 text-blue-400 light:bg-blue-100 light:text-blue-800">
                         {user.classe.name}
                       </span>
                     ) : (
-                      <span className="text-gray-400 dark:text-gray-500">-</span>
+                      <span className="text-gray-500 light:text-gray-400">-</span>
                     )}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                  <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-400 light:text-gray-500 hidden lg:table-cell">
                     {user._count?.createdTasks || 0}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                  <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-400 light:text-gray-500 hidden lg:table-cell">
                     {user._count?.assignedTasks || 0}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <div className="flex gap-2 justify-end">
+                  <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                    <div className="flex gap-1 sm:gap-2 justify-end">
                       <Button
                         variant="ghost"
                         size="sm"
@@ -160,6 +172,7 @@ export function UserManagement({ users, classes }: UserManagementProps) {
                           setEditingUser(user)
                           setEditingRole(user.role)
                         }}
+                        className="p-2"
                       >
                         <Edit size={16} />
                       </Button>
@@ -167,6 +180,7 @@ export function UserManagement({ users, classes }: UserManagementProps) {
                         variant="destructive"
                         size="sm"
                         onClick={() => handleDeleteUser(user.id)}
+                        className="p-2"
                       >
                         <Trash2 size={16} />
                       </Button>
@@ -192,34 +206,34 @@ export function UserManagement({ users, classes }: UserManagementProps) {
       >
         <form onSubmit={handleCreateUser} className="space-y-4">
           {error && (
-            <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-600 dark:bg-red-900/20 dark:border-red-800 dark:text-red-400">
+            <div className="p-3 bg-red-900/20 border border-red-800 light:bg-red-50 light:border-red-200 rounded-lg text-sm text-red-400 light:text-red-600">
               {error}
             </div>
           )}
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label className="block text-sm font-medium text-gray-300 light:text-gray-700 mb-1">
               Nom complet <span className="text-red-500">*</span>
             </label>
             <Input name="name" required placeholder="Jean Dupont" />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label className="block text-sm font-medium text-gray-300 light:text-gray-700 mb-1">
               Email <span className="text-red-500">*</span>
             </label>
             <Input name="email" type="email" required placeholder="jean@example.com" />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label className="block text-sm font-medium text-gray-300 light:text-gray-700 mb-1">
               Mot de passe <span className="text-red-500">*</span>
             </label>
             <Input name="password" type="password" required placeholder="••••••••" />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label className="block text-sm font-medium text-gray-300 light:text-gray-700 mb-1">
               Rôle
             </label>
             <Select 
@@ -235,7 +249,7 @@ export function UserManagement({ users, classes }: UserManagementProps) {
 
           {(selectedRole === 'STUDENT' || selectedRole === 'TEACHER') && classes.length > 0 && (
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-gray-300 light:text-gray-700 mb-1">
                 Classe {selectedRole === 'TEACHER' ? '(classe principale)' : '(optionnel)'}
               </label>
               <Select name="classeId">
@@ -247,15 +261,15 @@ export function UserManagement({ users, classes }: UserManagementProps) {
                 ))}
               </Select>
               {selectedRole === 'TEACHER' && (
-                <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                <p className="mt-1 text-xs text-gray-400 light:text-gray-500">
                   Classe principale de l'enseignant
                 </p>
               )}
             </div>
           )}
 
-          <div className="flex gap-3 pt-4">
-            <Button type="submit" disabled={isLoading} className="flex-1">
+          <div className="flex flex-col sm:flex-row gap-3 pt-4">
+            <Button type="submit" disabled={isLoading} className="flex-1 w-full sm:w-auto">
               {isLoading ? 'Création...' : 'Créer l\'utilisateur'}
             </Button>
             <Button
@@ -265,6 +279,7 @@ export function UserManagement({ users, classes }: UserManagementProps) {
                 setIsCreateModalOpen(false)
                 setSelectedRole('STUDENT')
               }}
+              className="w-full sm:w-auto"
             >
               Annuler
             </Button>
@@ -286,13 +301,13 @@ export function UserManagement({ users, classes }: UserManagementProps) {
         {editingUser && (
           <form onSubmit={handleUpdateUser} className="space-y-4">
             {error && (
-              <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-600 dark:bg-red-900/20 dark:border-red-800 dark:text-red-400">
+              <div className="p-3 bg-red-900/20 border border-red-800 light:bg-red-50 light:border-red-200 rounded-lg text-sm text-red-400 light:text-red-600">
                 {error}
               </div>
             )}
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-gray-300 light:text-gray-700 mb-1">
                 Nom complet <span className="text-red-500">*</span>
               </label>
               <Input
@@ -304,7 +319,7 @@ export function UserManagement({ users, classes }: UserManagementProps) {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-gray-300 light:text-gray-700 mb-1">
                 Email <span className="text-red-500">*</span>
               </label>
               <Input
@@ -317,7 +332,7 @@ export function UserManagement({ users, classes }: UserManagementProps) {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-gray-300 light:text-gray-700 mb-1">
                 Rôle
               </label>
               <Select
@@ -333,7 +348,7 @@ export function UserManagement({ users, classes }: UserManagementProps) {
 
             {((editingRole || editingUser.role) === 'STUDENT' || (editingRole || editingUser.role) === 'TEACHER') && classes.length > 0 && (
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-gray-300 light:text-gray-700 mb-1">
                   Classe {(editingRole || editingUser.role) === 'TEACHER' ? '(classe principale)' : ''}
                 </label>
                 <Select name="classeId" defaultValue={editingUser.classeId || ''}>
@@ -345,15 +360,15 @@ export function UserManagement({ users, classes }: UserManagementProps) {
                   ))}
                 </Select>
                 {(editingRole || editingUser.role) === 'TEACHER' && (
-                  <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                  <p className="mt-1 text-xs text-gray-400 light:text-gray-500">
                     Classe principale de l'enseignant
                   </p>
                 )}
               </div>
             )}
 
-            <div className="flex gap-3 pt-4">
-              <Button type="submit" disabled={isLoading} className="flex-1">
+            <div className="flex flex-col sm:flex-row gap-3 pt-4">
+              <Button type="submit" disabled={isLoading} className="flex-1 w-full sm:w-auto">
                 {isLoading ? 'Mise à jour...' : 'Enregistrer'}
               </Button>
               <Button
@@ -363,6 +378,7 @@ export function UserManagement({ users, classes }: UserManagementProps) {
                   setEditingUser(null)
                   setEditingRole('STUDENT')
                 }}
+                className="w-full sm:w-auto"
               >
                 Annuler
               </Button>

@@ -31,19 +31,20 @@ export default async function TasksPage({
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div className="flex-1 min-w-0">
+          <h1 className="text-2xl sm:text-3xl font-bold text-white light:text-gray-900">
             Mes tâches
           </h1>
-          <p className="text-gray-600 dark:text-gray-400 mt-1">
+          <p className="text-sm sm:text-base text-gray-400 light:text-gray-600 mt-1">
             {tasks.length} tâche{tasks.length !== 1 ? 's' : ''}
           </p>
         </div>
-        <Link href="/tasks/new">
-          <Button>
+        <Link href="/tasks/new" className="w-full sm:w-auto">
+          <Button className="w-full sm:w-auto">
             <Plus size={18} className="mr-2" />
-            Nouvelle tâche
+            <span className="hidden xs:inline">Nouvelle tâche</span>
+            <span className="xs:hidden">Nouvelle</span>
           </Button>
         </Link>
       </div>

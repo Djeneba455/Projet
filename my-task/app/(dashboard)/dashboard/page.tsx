@@ -38,19 +38,20 @@ export default async function DashboardPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div className="flex-1 min-w-0">
+          <h1 className="text-2xl sm:text-3xl font-bold text-white light:text-gray-900">
             Dashboard
           </h1>
-          <p className="text-gray-600 dark:text-gray-400 mt-1">
+          <p className="text-sm sm:text-base text-gray-400 light:text-gray-600 mt-1 truncate">
             Bienvenue, {session?.user?.name}
           </p>
         </div>
-        <Link href="/tasks/new">
-          <Button>
+        <Link href="/tasks/new" className="w-full sm:w-auto">
+          <Button className="w-full sm:w-auto">
             <Plus size={18} className="mr-2" />
-            Nouvelle tâche
+            <span className="hidden xs:inline">Nouvelle tâche</span>
+            <span className="xs:hidden">Nouvelle</span>
           </Button>
         </Link>
       </div>
@@ -61,38 +62,38 @@ export default async function DashboardPage() {
           title="À faire"
           value={todoCount}
           icon={<Clock size={24} />}
-          color="bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400"
+          color="bg-gray-800 light:bg-gray-100 text-gray-400 light:text-gray-600"
         />
         <StatCard
           title="En cours"
           value={inProgressCount}
           icon={<TrendingUp size={24} />}
-          color="bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400"
+          color="bg-blue-900/30 light:bg-blue-100 text-blue-400 light:text-blue-600"
         />
         <StatCard
           title="Terminées"
           value={completedCount}
           icon={<CheckCircle size={24} />}
-          color="bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400"
+          color="bg-green-900/30 light:bg-green-100 text-green-400 light:text-green-600"
         />
         <StatCard
           title="Urgentes"
           value={urgentCount}
           icon={<AlertCircle size={24} />}
-          color="bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400"
+          color="bg-red-900/30 light:bg-red-100 text-red-400 light:text-red-600"
         />
       </div>
 
       {/* Upcoming Tasks */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
-        <div className="p-6 border-b border-gray-200 dark:border-gray-700">
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+      <div className="bg-gray-800 light:bg-white rounded-xl shadow-sm border border-gray-700 light:border-gray-200">
+        <div className="p-6 border-b border-gray-700 light:border-gray-200">
+          <h2 className="text-xl font-semibold text-white light:text-gray-900">
             Tâches à venir (7 prochains jours)
           </h2>
         </div>
         <div className="p-6">
           {upcomingTasks.length === 0 ? (
-            <p className="text-center text-gray-500 dark:text-gray-400 py-8">
+            <p className="text-center text-gray-400 light:text-gray-500 py-8">
               Aucune tâche à venir
             </p>
           ) : (
@@ -101,11 +102,11 @@ export default async function DashboardPage() {
                 <Link
                   key={task.id}
                   href={`/tasks/${task.id}`}
-                  className="block p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                  className="block p-4 bg-gray-700/50 light:bg-gray-50 rounded-lg hover:bg-gray-700 light:hover:bg-gray-100 transition-colors"
                 >
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
-                      <h3 className="font-medium text-gray-900 dark:text-white">
+                      <h3 className="font-medium text-white light:text-gray-900">
                         {task.title}
                       </h3>
                       <div className="flex items-center gap-2 mt-2">
@@ -114,10 +115,11 @@ export default async function DashboardPage() {
                         </Badge>
                         {task.category && (
                           <span
-                            className="text-xs px-2 py-1 rounded"
+                            className="text-xs px-2 py-1 rounded border light:border-opacity-30"
                             style={{
                               backgroundColor: task.category.color + '20',
                               color: task.category.color,
+                              borderColor: task.category.color + '40',
                             }}
                           >
                             {task.category.name}
@@ -125,7 +127,7 @@ export default async function DashboardPage() {
                         )}
                       </div>
                     </div>
-                    <div className="text-sm text-gray-500 dark:text-gray-400">
+                    <div className="text-sm text-gray-400 light:text-gray-500">
                       {formatDate(task.dueDate)}
                     </div>
                   </div>
@@ -138,9 +140,9 @@ export default async function DashboardPage() {
 
       {/* Categories Overview */}
       {categories.length > 0 && (
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
-          <div className="p-6 border-b border-gray-200 dark:border-gray-700">
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+        <div className="bg-gray-800 light:bg-white rounded-xl shadow-sm border border-gray-700 light:border-gray-200">
+          <div className="p-6 border-b border-gray-700 light:border-gray-200">
+            <h2 className="text-xl font-semibold text-white light:text-gray-900">
               Catégories
             </h2>
           </div>
@@ -165,7 +167,7 @@ export default async function DashboardPage() {
                   >
                     {category.name}
                   </p>
-                  <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                  <p className="text-xs text-gray-400 light:text-gray-600 mt-1">
                     {category._count?.tasks || 0} tâches
                   </p>
                 </div>
@@ -190,11 +192,11 @@ function StatCard({
   color: string
 }) {
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+    <div className="bg-gray-800 light:bg-white rounded-xl shadow-sm border border-gray-700 light:border-gray-200 p-6">
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-sm text-gray-600 dark:text-gray-400">{title}</p>
-          <p className="text-3xl font-bold text-gray-900 dark:text-white mt-2">
+          <p className="text-sm text-gray-400 light:text-gray-600">{title}</p>
+          <p className="text-3xl font-bold text-white light:text-gray-900 mt-2">
             {value}
           </p>
         </div>

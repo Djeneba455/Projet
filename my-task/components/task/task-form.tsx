@@ -87,7 +87,7 @@ export function TaskForm({ task, categories, students, onSuccess, onCancel }: Ta
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       {error && (
-        <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-600 dark:bg-red-900/20 dark:border-red-800 dark:text-red-400">
+        <div className="p-3 bg-red-900/20 border border-red-800 rounded-lg text-sm text-red-400 light:bg-red-50 light:border-red-200 light:text-red-600">
           {error}
         </div>
       )}
@@ -95,7 +95,7 @@ export function TaskForm({ task, categories, students, onSuccess, onCancel }: Ta
       <div>
         <label
           htmlFor="title"
-          className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+          className="block text-sm font-medium text-gray-300 light:text-gray-700 mb-1"
         >
           Titre <span className="text-red-500">*</span>
         </label>
@@ -105,7 +105,7 @@ export function TaskForm({ task, categories, students, onSuccess, onCancel }: Ta
           placeholder="Ex: Terminer le projet de maths"
         />
         {errors.title && (
-          <p className="mt-1 text-sm text-red-600 dark:text-red-400">
+          <p className="mt-1 text-sm text-red-400 light:text-red-600">
             {errors.title.message}
           </p>
         )}
@@ -114,7 +114,7 @@ export function TaskForm({ task, categories, students, onSuccess, onCancel }: Ta
       <div>
         <label
           htmlFor="description"
-          className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+          className="block text-sm font-medium text-gray-300 light:text-gray-700 mb-1"
         >
           Description
         </label>
@@ -125,7 +125,7 @@ export function TaskForm({ task, categories, students, onSuccess, onCancel }: Ta
           rows={4}
         />
         {errors.description && (
-          <p className="mt-1 text-sm text-red-600 dark:text-red-400">
+          <p className="mt-1 text-sm text-red-400 light:text-red-600">
             {errors.description.message}
           </p>
         )}
@@ -135,7 +135,7 @@ export function TaskForm({ task, categories, students, onSuccess, onCancel }: Ta
         <div>
           <label
             htmlFor="status"
-            className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+            className="block text-sm font-medium text-gray-300 light:text-gray-700 mb-1"
           >
             Statut
           </label>
@@ -149,7 +149,7 @@ export function TaskForm({ task, categories, students, onSuccess, onCancel }: Ta
         <div>
           <label
             htmlFor="priority"
-            className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+            className="block text-sm font-medium text-gray-300 light:text-gray-700 mb-1"
           >
             Priorité
           </label>
@@ -166,7 +166,7 @@ export function TaskForm({ task, categories, students, onSuccess, onCancel }: Ta
         <div>
           <label
             htmlFor="dueDate"
-            className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+            className="block text-sm font-medium text-gray-300 light:text-gray-700 mb-1"
           >
             Date d'échéance
           </label>
@@ -176,7 +176,7 @@ export function TaskForm({ task, categories, students, onSuccess, onCancel }: Ta
         <div>
           <label
             htmlFor="categoryId"
-            className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+            className="block text-sm font-medium text-gray-300 light:text-gray-700 mb-1"
           >
             Catégorie
           </label>
@@ -195,7 +195,7 @@ export function TaskForm({ task, categories, students, onSuccess, onCancel }: Ta
         <div>
           <label
             htmlFor="assigneeId"
-            className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+            className="block text-sm font-medium text-gray-300 light:text-gray-700 mb-1"
           >
             Assigner à
           </label>
@@ -213,12 +213,12 @@ export function TaskForm({ task, categories, students, onSuccess, onCancel }: Ta
         </div>
       )}
 
-      <div className="flex gap-3 pt-4">
-        <Button type="submit" disabled={isLoading} className="flex-1">
+      <div className="flex flex-col sm:flex-row gap-3 pt-4">
+        <Button type="submit" disabled={isLoading} className="flex-1 w-full sm:w-auto">
           {isLoading ? 'Enregistrement...' : task ? 'Mettre à jour' : 'Créer la tâche'}
         </Button>
         {onCancel && (
-          <Button type="button" variant="outline" onClick={onCancel}>
+          <Button type="button" variant="outline" onClick={onCancel} className="w-full sm:w-auto">
             Annuler
           </Button>
         )}

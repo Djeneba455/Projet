@@ -40,21 +40,21 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 px-4 py-12">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 to-gray-800 light:from-blue-50 light:to-indigo-100 px-4 py-12">
       <div className="w-full max-w-md">
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+        <div className="bg-gray-800 light:bg-white rounded-2xl shadow-xl p-8">
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+            <h1 className="text-3xl font-bold text-white light:text-gray-900 mb-2">
               Créer un compte
             </h1>
-            <p className="text-gray-600 dark:text-gray-400">
+            <p className="text-gray-400 light:text-gray-600">
               Rejoignez notre plateforme de gestion de tâches
             </p>
           </div>
 
           {error && (
-            <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
-              <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
+            <div className="mb-6 p-4 bg-red-900/20 light:bg-red-50 border border-red-800 light:border-red-200 rounded-lg">
+              <p className="text-sm text-red-400 light:text-red-600">{error}</p>
             </div>
           )}
 
@@ -62,7 +62,7 @@ export default function RegisterPage() {
             <div>
               <label
                 htmlFor="name"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                className="block text-sm font-medium text-gray-300 light:text-gray-700 mb-2"
               >
                 Nom complet
               </label>
@@ -72,7 +72,7 @@ export default function RegisterPage() {
                 type="text"
                 required
                 autoComplete="name"
-                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition"
+                className="w-full px-4 py-3 border border-gray-600 light:border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-700 light:bg-white text-white light:text-gray-900 transition"
                 placeholder="Jean Dupont"
               />
             </div>
@@ -80,7 +80,7 @@ export default function RegisterPage() {
             <div>
               <label
                 htmlFor="email"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                className="block text-sm font-medium text-gray-300 light:text-gray-700 mb-2"
               >
                 Email
               </label>
@@ -90,7 +90,7 @@ export default function RegisterPage() {
                 type="email"
                 required
                 autoComplete="email"
-                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition"
+                className="w-full px-4 py-3 border border-gray-600 light:border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-700 light:bg-white text-white light:text-gray-900 transition"
                 placeholder="votre@email.com"
               />
             </div>
@@ -98,7 +98,7 @@ export default function RegisterPage() {
             <div>
               <label
                 htmlFor="password"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                className="block text-sm font-medium text-gray-300 light:text-gray-700 mb-2"
               >
                 Mot de passe
               </label>
@@ -108,10 +108,10 @@ export default function RegisterPage() {
                 type="password"
                 required
                 autoComplete="new-password"
-                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition"
+                className="w-full px-4 py-3 border border-gray-600 light:border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-700 light:bg-white text-white light:text-gray-900 transition"
                 placeholder="••••••••"
               />
-              <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+              <p className="mt-1 text-xs text-gray-400 light:text-gray-500">
                 Minimum 6 caractères
               </p>
             </div>
@@ -119,7 +119,7 @@ export default function RegisterPage() {
             <div>
               <label
                 htmlFor="confirmPassword"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                className="block text-sm font-medium text-gray-300 light:text-gray-700 mb-2"
               >
                 Confirmer le mot de passe
               </label>
@@ -129,7 +129,7 @@ export default function RegisterPage() {
                 type="password"
                 required
                 autoComplete="new-password"
-                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition"
+                className="w-full px-4 py-3 border border-gray-600 light:border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-700 light:bg-white text-white light:text-gray-900 transition"
                 placeholder="••••••••"
               />
             </div>
@@ -138,14 +138,14 @@ export default function RegisterPage() {
               <div>
                 <label
                   htmlFor="classeId"
-                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                  className="block text-sm font-medium text-gray-300 light:text-gray-700 mb-2"
                 >
                   Classe (optionnel)
                 </label>
                 <select
                   id="classeId"
                   name="classeId"
-                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition"
+                  className="w-full px-4 py-3 border border-gray-600 light:border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-700 light:bg-white text-white light:text-gray-900 transition"
                 >
                   <option value="">Aucune classe</option>
                   {classes.map((classe) => (
@@ -167,11 +167,11 @@ export default function RegisterPage() {
           </form>
 
           <div className="mt-6 text-center">
-            <p className="text-sm text-gray-600 dark:text-gray-400">
+            <p className="text-sm text-gray-400 light:text-gray-600">
               Vous avez déjà un compte ?{' '}
               <Link
                 href="/login"
-                className="text-blue-600 hover:text-blue-700 dark:text-blue-400 font-semibold"
+                className="text-blue-400 light:text-blue-600 hover:text-blue-300 light:hover:text-blue-700 font-semibold"
               >
                 Se connecter
               </Link>

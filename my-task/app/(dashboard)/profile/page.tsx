@@ -35,36 +35,36 @@ export default async function ProfilePage() {
   const getRoleColor = (role: string) => {
     switch (role) {
       case 'ADMIN':
-        return 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400'
+        return 'bg-red-900/30 text-red-400 light:bg-red-100 light:text-red-800'
       case 'TEACHER':
-        return 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400'
+        return 'bg-blue-900/30 text-blue-400 light:bg-blue-100 light:text-blue-800'
       case 'STUDENT':
-        return 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400'
+        return 'bg-green-900/30 text-green-400 light:bg-green-100 light:text-green-800'
       default:
-        return 'bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-400'
+        return 'bg-gray-900/30 text-gray-400 light:bg-gray-100 light:text-gray-800'
     }
   }
 
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+        <h1 className="text-2xl sm:text-3xl font-bold text-white light:text-gray-900">
           Mon Profil
         </h1>
-        <p className="text-gray-600 dark:text-gray-400 mt-1">
+        <p className="text-sm sm:text-base text-gray-400 light:text-gray-600 mt-1">
           Gérez vos informations personnelles et vos paramètres de compte
         </p>
       </div>
 
       {/* User Info Card */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
-        <div className="flex items-start gap-4">
-          <div className="w-16 h-16 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center flex-shrink-0">
-            <User size={32} className="text-blue-600 dark:text-blue-400" />
+      <div className="bg-gray-800 light:bg-white rounded-xl shadow-sm border border-gray-700 light:border-gray-200 p-4 sm:p-6">
+        <div className="flex flex-col sm:flex-row items-start gap-4">
+          <div className="w-16 h-16 rounded-full bg-blue-900/30 light:bg-blue-100 flex items-center justify-center flex-shrink-0 mx-auto sm:mx-0">
+            <User size={32} className="text-blue-400 light:text-blue-600" />
           </div>
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-3 flex-wrap">
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+          <div className="flex-1 min-w-0 w-full sm:w-auto">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 flex-wrap">
+              <h2 className="text-xl sm:text-2xl font-bold text-white light:text-gray-900">
                 {user.name}
               </h2>
               <Badge className={getRoleColor(user.role)}>
@@ -72,17 +72,17 @@ export default async function ProfilePage() {
               </Badge>
             </div>
             <div className="mt-4 space-y-2">
-              <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
+              <div className="flex items-center gap-2 text-gray-400 light:text-gray-600">
                 <Mail size={16} />
                 <span className="text-sm">{user.email}</span>
               </div>
               {user.classe && (
-                <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
+                <div className="flex items-center gap-2 text-gray-400 light:text-gray-600">
                   <Shield size={16} />
                   <span className="text-sm">Classe: {user.classe.name}</span>
                 </div>
               )}
-              <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
+              <div className="flex items-center gap-2 text-gray-400 light:text-gray-600">
                 <Calendar size={16} />
                 <span className="text-sm">
                   Membre depuis {new Date(user.createdAt).toLocaleDateString('fr-FR')}

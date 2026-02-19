@@ -31,13 +31,13 @@ export function Toast({ message, type = 'info', duration = 3000, onClose }: Toas
         {
           'translate-y-0 opacity-100': isVisible,
           'translate-y-2 opacity-0': !isVisible,
-          'bg-green-50 text-green-800 border border-green-200 dark:bg-green-900/30 dark:text-green-400 dark:border-green-800':
+          'bg-green-900/30 text-green-400 border border-green-800 light:bg-green-50 light:text-green-800 light:border-green-200':
             type === 'success',
-          'bg-red-50 text-red-800 border border-red-200 dark:bg-red-900/30 dark:text-red-400 dark:border-red-800':
+          'bg-red-900/30 text-red-400 border border-red-800 light:bg-red-50 light:text-red-800 light:border-red-200':
             type === 'error',
-          'bg-yellow-50 text-yellow-800 border border-yellow-200 dark:bg-yellow-900/30 dark:text-yellow-400 dark:border-yellow-800':
+          'bg-yellow-900/30 text-yellow-400 border border-yellow-800 light:bg-yellow-50 light:text-yellow-800 light:border-yellow-200':
             type === 'warning',
-          'bg-blue-50 text-blue-800 border border-blue-200 dark:bg-blue-900/30 dark:text-blue-400 dark:border-blue-800':
+          'bg-blue-900/30 text-blue-400 border border-blue-800 light:bg-blue-50 light:text-blue-800 light:border-blue-200':
             type === 'info',
         }
       )}

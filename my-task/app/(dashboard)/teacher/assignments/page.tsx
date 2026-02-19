@@ -19,32 +19,32 @@ export default async function TeacherAssignmentsPage() {
     <div className="max-w-4xl mx-auto space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+        <h1 className="text-2xl sm:text-3xl font-bold text-white light:text-gray-900">
           Attribuer des tâches
         </h1>
-        <p className="text-gray-600 dark:text-gray-400 mt-1">
+        <p className="text-sm sm:text-base text-gray-400 light:text-gray-600 mt-1">
           Créez et assignez des tâches à vos étudiants
         </p>
       </div>
 
       {/* Quick Assignment Form */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+      <div className="bg-gray-800 light:bg-white rounded-xl shadow-sm border border-gray-700 light:border-gray-200 p-4 sm:p-6">
+        <h2 className="text-lg font-semibold text-white light:text-gray-900 mb-4">
           Nouvelle attribution
         </h2>
         <TaskForm categories={categories} students={students} />
       </div>
 
       {/* Students List */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
-        <div className="p-6 border-b border-gray-200 dark:border-gray-700">
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+      <div className="bg-gray-800 light:bg-white rounded-xl shadow-sm border border-gray-700 light:border-gray-200">
+        <div className="p-6 border-b border-gray-700 light:border-gray-200">
+          <h2 className="text-lg font-semibold text-white light:text-gray-900">
             Mes étudiants
           </h2>
         </div>
         <div className="p-6">
           {students.length === 0 ? (
-            <p className="text-center text-gray-500 dark:text-gray-400 py-8">
+            <p className="text-center text-gray-400 light:text-gray-500 py-8">
               Aucun étudiant enregistré
             </p>
           ) : (
@@ -52,12 +52,12 @@ export default async function TeacherAssignmentsPage() {
               {students.map((student) => (
                 <div
                   key={student.id}
-                  className="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg"
+                  className="p-4 bg-gray-700/50 light:bg-gray-50 rounded-lg"
                 >
-                  <h3 className="font-medium text-gray-900 dark:text-white">
+                  <h3 className="font-medium text-white light:text-gray-900">
                     {student.name}
                   </h3>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                  <p className="text-sm text-gray-400 light:text-gray-500">
                     {student.email}
                   </p>
                 </div>

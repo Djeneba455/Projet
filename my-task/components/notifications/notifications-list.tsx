@@ -46,13 +46,13 @@ export function NotificationsList({ notifications }: NotificationsListProps) {
   const getNotificationIcon = (type: string) => {
     switch (type) {
       case 'success':
-        return <CheckCircle size={20} className="text-green-600 dark:text-green-400" />
+        return <CheckCircle size={20} className="text-green-400 light:text-green-600" />
       case 'warning':
-        return <AlertTriangle size={20} className="text-yellow-600 dark:text-yellow-400" />
+        return <AlertTriangle size={20} className="text-yellow-400 light:text-yellow-600" />
       case 'error':
-        return <AlertTriangle size={20} className="text-red-600 dark:text-red-400" />
+        return <AlertTriangle size={20} className="text-red-400 light:text-red-600" />
       default:
-        return <Info size={20} className="text-blue-600 dark:text-blue-400" />
+        return <Info size={20} className="text-blue-400 light:text-blue-600" />
     }
   }
 
@@ -75,12 +75,12 @@ export function NotificationsList({ notifications }: NotificationsListProps) {
 
       {/* Notifications */}
       {notifications.length === 0 ? (
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-12 text-center">
-          <Bell size={48} className="mx-auto text-gray-400 dark:text-gray-600 mb-4" />
-          <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+        <div className="bg-gray-800 light:bg-white rounded-xl shadow-sm border border-gray-700 light:border-gray-200 p-12 text-center">
+          <Bell size={48} className="mx-auto text-gray-600 light:text-gray-400 mb-4" />
+          <h3 className="text-lg font-medium text-white light:text-gray-900 mb-2">
             Aucune notification
           </h3>
-          <p className="text-gray-600 dark:text-gray-400">
+          <p className="text-gray-400 light:text-gray-600">
             Vous n'avez pas encore de notifications
           </p>
         </div>
@@ -89,10 +89,10 @@ export function NotificationsList({ notifications }: NotificationsListProps) {
           {notifications.map((notification) => (
             <div
               key={notification.id}
-              className={`bg-white dark:bg-gray-800 rounded-lg shadow-sm border p-4 transition-all ${
+              className={`bg-gray-800 light:bg-white rounded-lg shadow-sm border p-4 transition-all ${
                 notification.read
-                  ? 'border-gray-200 dark:border-gray-700'
-                  : 'border-blue-200 dark:border-blue-800 bg-blue-50/50 dark:bg-blue-900/10'
+                  ? 'border-gray-700 light:border-gray-200'
+                  : 'border-blue-800 light:border-blue-200 bg-blue-900/10 light:bg-blue-50/50'
               }`}
             >
               <div className="flex gap-4">
@@ -104,7 +104,7 @@ export function NotificationsList({ notifications }: NotificationsListProps) {
                 {/* Content */}
                 <div className="flex-1 min-w-0">
                   <div className="flex items-start justify-between gap-4 mb-2">
-                    <h3 className="font-semibold text-gray-900 dark:text-white">
+                    <h3 className="font-semibold text-white light:text-gray-900">
                       {notification.title}
                     </h3>
                     {!notification.read && (
@@ -114,11 +114,11 @@ export function NotificationsList({ notifications }: NotificationsListProps) {
                     )}
                   </div>
                   
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                  <p className="text-sm text-gray-400 light:text-gray-600 mb-2">
                     {notification.message}
                   </p>
                   
-                  <p className="text-xs text-gray-500 dark:text-gray-500">
+                  <p className="text-xs text-gray-500">
                     {formatDateTime(notification.createdAt)}
                   </p>
                 </div>

@@ -25,18 +25,18 @@ export default async function NewTaskPage() {
       <div>
         <Link
           href="/tasks"
-          className="inline-flex items-center text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white mb-4"
+          className="inline-flex items-center text-sm text-gray-400 light:text-gray-600 hover:text-white light:hover:text-gray-900 mb-4"
         >
           <ArrowLeft size={16} className="mr-1" />
           Retour aux tâches
         </Link>
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+        <h1 className="text-3xl font-bold text-white light:text-gray-900">
           Nouvelle tâche
         </h1>
       </div>
 
       {/* Form */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+      <div className="bg-gray-800 light:bg-white rounded-xl shadow-sm border border-gray-700 light:border-gray-200 p-6">
         <TaskForm categories={categories} students={students} />
       </div>
     </div>

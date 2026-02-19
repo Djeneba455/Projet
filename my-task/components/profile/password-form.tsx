@@ -33,20 +33,20 @@ export function PasswordForm() {
   }
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
-      <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+    <div className="bg-gray-800 light:bg-white rounded-xl shadow-sm border border-gray-700 light:border-gray-200 p-6">
+      <h2 className="text-xl font-semibold text-white light:text-gray-900 mb-4">
         Changer le mot de passe
       </h2>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         {error && (
-          <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-600 dark:bg-red-900/20 dark:border-red-800 dark:text-red-400">
+          <div className="p-3 bg-red-900/20 light:bg-red-50 border border-red-800 light:border-red-200 rounded-lg text-sm text-red-400 light:text-red-600">
             {error}
           </div>
         )}
 
         {success && (
-          <div className="p-3 bg-green-50 border border-green-200 rounded-lg text-sm text-green-600 dark:bg-green-900/20 dark:border-green-800 dark:text-green-400">
+          <div className="p-3 bg-green-900/20 light:bg-green-50 border border-green-800 light:border-green-200 rounded-lg text-sm text-green-400 light:text-green-600">
             {success}
           </div>
         )}
@@ -54,7 +54,7 @@ export function PasswordForm() {
         <div>
           <label
             htmlFor="currentPassword"
-            className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+            className="block text-sm font-medium text-gray-300 light:text-gray-700 mb-1"
           >
             Mot de passe actuel <span className="text-red-500">*</span>
           </label>
@@ -70,7 +70,7 @@ export function PasswordForm() {
         <div>
           <label
             htmlFor="newPassword"
-            className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+            className="block text-sm font-medium text-gray-300 light:text-gray-700 mb-1"
           >
             Nouveau mot de passe <span className="text-red-500">*</span>
           </label>
@@ -81,7 +81,7 @@ export function PasswordForm() {
             required
             placeholder="••••••••"
           />
-          <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+          <p className="mt-1 text-xs text-gray-400 light:text-gray-500">
             Minimum 6 caractères
           </p>
         </div>
@@ -89,7 +89,7 @@ export function PasswordForm() {
         <div>
           <label
             htmlFor="confirmPassword"
-            className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+            className="block text-sm font-medium text-gray-300 light:text-gray-700 mb-1"
           >
             Confirmer le nouveau mot de passe <span className="text-red-500">*</span>
           </label>

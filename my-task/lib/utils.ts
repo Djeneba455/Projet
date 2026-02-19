@@ -107,3 +107,15 @@ export function getRoleLabel(role: string): string {
       return role
   }
 }
+
+/**
+ * Get category badge styles with proper dark mode support
+ */
+export function getCategoryBadgeStyle(color: string) {
+  return {
+    backgroundColor: `${color}20`,
+    color: color,
+    // Add a border in dark mode for better visibility
+    borderColor: `${color}40`,
+  }
+}

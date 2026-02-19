@@ -63,7 +63,7 @@ export function CategoryManagement({ categories }: CategoryManagementProps) {
         {categories.map((category) => (
           <div
             key={category.id}
-            className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-5 hover:shadow-md transition-shadow"
+            className="bg-gray-800 light:bg-white rounded-lg border border-gray-700 light:border-gray-200 p-5 hover:shadow-md transition-shadow"
           >
             <div className="flex items-start justify-between mb-3">
               <div
@@ -90,18 +90,22 @@ export function CategoryManagement({ categories }: CategoryManagementProps) {
             
             <h3
               className="text-lg font-semibold mb-1"
-              style={{ color: category.color }}
+              style={{ 
+                color: category.color,
+                // Ensure visibility in dark mode
+                filter: 'brightness(1.1)',
+              }}
             >
               {category.name}
             </h3>
             
             {category.description && (
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+              <p className="text-sm text-gray-400 light:text-gray-600 mb-3">
                 {category.description}
               </p>
             )}
             
-            <p className="text-xs text-gray-500 dark:text-gray-400">
+            <p className="text-xs text-gray-400 light:text-gray-500">
               {category._count?.tasks || 0} tâche{category._count?.tasks !== 1 ? 's' : ''}
             </p>
           </div>
@@ -121,13 +125,13 @@ export function CategoryManagement({ categories }: CategoryManagementProps) {
       >
         <form onSubmit={handleSubmit} className="space-y-4">
           {error && (
-            <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-600 dark:bg-red-900/20 dark:border-red-800 dark:text-red-400">
+            <div className="p-3 bg-red-900/20 border border-red-800 light:bg-red-50 light:border-red-200 rounded-lg text-sm text-red-400 light:text-red-600">
               {error}
             </div>
           )}
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label className="block text-sm font-medium text-gray-300 light:text-gray-700 mb-1">
               Nom <span className="text-red-500">*</span>
             </label>
             <Input
@@ -139,7 +143,7 @@ export function CategoryManagement({ categories }: CategoryManagementProps) {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label className="block text-sm font-medium text-gray-300 light:text-gray-700 mb-1">
               Couleur <span className="text-red-500">*</span>
             </label>
             <Input
@@ -152,7 +156,7 @@ export function CategoryManagement({ categories }: CategoryManagementProps) {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label className="block text-sm font-medium text-gray-300 light:text-gray-700 mb-1">
               Description
             </label>
             <Textarea

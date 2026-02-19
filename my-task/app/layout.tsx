@@ -28,7 +28,27 @@ export default function RootLayout({
     <html lang="fr" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        suppressHydrationWarning
       >
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  const theme = localStorage.getItem('theme');
+                  if (theme === 'light') {
+                    document.documentElement.setAttribute('data-theme', 'light');
+                    document.documentElement.classList.add('light');
+                  } else {
+                    // Mode sombre par défaut
+                    document.documentElement.removeAttribute('data-theme');
+                    document.documentElement.classList.remove('light');
+                  }
+                } catch (e) {}
+              })();
+            `,
+          }}
+        />
         <ThemeProvider>
           <SessionProvider>{children}</SessionProvider>
         </ThemeProvider>

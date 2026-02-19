@@ -34,13 +34,13 @@ export function TaskCard({ task, isDragging }: TaskCardProps) {
     >
       <Link
         href={`/tasks/${task.id}`}
-        className="block bg-white dark:bg-gray-800 rounded-lg p-4 shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow"
+        className="block bg-gray-800 light:bg-white rounded-lg p-4 shadow-sm border border-gray-700 light:border-gray-200 hover:shadow-md transition-shadow"
       >
         {/* Drag Handle */}
         <div
           {...attributes}
           {...listeners}
-          className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity cursor-grab active:cursor-grabbing text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+          className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity cursor-grab active:cursor-grabbing text-gray-400 hover:text-gray-300 light:hover:text-gray-600"
         >
           <GripVertical size={20} />
         </div>
@@ -53,13 +53,13 @@ export function TaskCard({ task, isDragging }: TaskCardProps) {
         </div>
 
         {/* Title */}
-        <h3 className="font-semibold text-gray-900 dark:text-white mb-2 pr-6">
+        <h3 className="font-semibold text-white light:text-gray-900 mb-2 pr-6">
           {task.title}
         </h3>
 
         {/* Description */}
         {task.description && (
-          <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2 mb-3">
+          <p className="text-sm text-gray-400 light:text-gray-600 line-clamp-2 mb-3">
             {task.description}
           </p>
         )}
@@ -68,10 +68,11 @@ export function TaskCard({ task, isDragging }: TaskCardProps) {
         {task.category && (
           <div className="mb-3">
             <span
-              className="inline-flex items-center px-2 py-1 rounded text-xs font-medium"
+              className="inline-flex items-center px-2 py-1 rounded text-xs font-medium border light:border-opacity-30"
               style={{
                 backgroundColor: task.category.color + '20',
                 color: task.category.color,
+                borderColor: task.category.color + '40',
               }}
             >
               {task.category.name}
@@ -80,7 +81,7 @@ export function TaskCard({ task, isDragging }: TaskCardProps) {
         )}
 
         {/* Footer */}
-        <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 pt-3 border-t border-gray-100 dark:border-gray-700">
+        <div className="flex items-center justify-between text-xs text-gray-400 light:text-gray-500 pt-3 border-t border-gray-700 light:border-gray-100">
           {task.dueDate && (
             <div className="flex items-center gap-1">
               <Calendar size={14} />

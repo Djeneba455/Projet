@@ -49,7 +49,7 @@ export function Modal({
       {/* Modal */}
       <div
         className={cn(
-          'relative z-10 w-full rounded-xl bg-white p-6 shadow-xl dark:bg-gray-800 mx-4',
+          'relative z-10 w-full rounded-xl bg-gray-800 light:bg-white p-6 shadow-xl mx-4',
           {
             'max-w-sm': size === 'sm',
             'max-w-md': size === 'md',
@@ -62,12 +62,12 @@ export function Modal({
         {(title || description) && (
           <div className="mb-4">
             {title && (
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+              <h2 className="text-xl font-semibold text-white light:text-gray-900">
                 {title}
               </h2>
             )}
             {description && (
-              <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+              <p className="mt-1 text-sm text-gray-400 light:text-gray-500">
                 {description}
               </p>
             )}

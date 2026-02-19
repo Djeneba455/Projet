@@ -23,7 +23,7 @@ export function NotificationBell() {
   return (
     <Link
       href="/notifications"
-      className="relative p-2 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors"
+      className="relative p-2 text-gray-400 hover:text-white light:text-gray-600 light:hover:text-gray-900 transition-colors"
     >
       <Bell size={20} />
       {unreadCount > 0 && (

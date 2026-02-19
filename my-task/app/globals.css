@@ -1,13 +1,23 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* Définir la variante light: pour Tailwind CSS v4 */
+@custom-variant light {
+  &:where(.light, .light *, [data-theme="light"], [data-theme="light"] *) {
+    @slot;
+  }
 }
 
-.dark {
-  --background: #0a0a0a;
-  --foreground: #ededed;
+/* Mode sombre par défaut (sans classe) */
+:root {
+  --background: #111827;
+  --foreground: #f9fafb;
+}
+
+/* Mode clair (avec classe light ou data-theme="light") */
+html[data-theme="light"],
+html.light {
+  --background: #ffffff;
+  --foreground: #171717;
 }
 
 @theme inline {
@@ -17,8 +27,92 @@
   --font-mono: var(--font-geist-mono);
 }
 
+html {
+  background: var(--background);
+  color: var(--foreground);
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Mode sombre par défaut */
+html {
+  background-color: #111827;
+  color: #f9fafb;
+}
+
+html body {
+  background-color: #111827;
+  color: #f9fafb;
+}
+
+/* Mode clair */
+html[data-theme="light"] body,
+html.light body {
+  background: linear-gradient(to bottom right, #eff6ff, #eef2ff);
+  color: #171717;
+}
+
+/* Scrollbar utilities for better mobile experience */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Better touch targets on mobile */
+@media (max-width: 640px) {
+  button, a, input, select, textarea {
+    min-height: 44px;
+  }
+}
+
+/* Transitions fluides pour le changement de thème */
+* {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 200ms;
+}
+
+/* Mode sombre par défaut - styles pour inputs */
+input,
+select,
+textarea {
+  background-color: #1f2937;
+  color: #f9fafb;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #9ca3af;
+}
+
+/* Mode clair - styles pour inputs */
+html[data-theme="light"] input,
+html[data-theme="light"] select,
+html[data-theme="light"] textarea,
+html.light input,
+html.light select,
+html.light textarea {
+  background-color: #ffffff;
+  color: #171717;
+}
+
+html[data-theme="light"] input::placeholder,
+html[data-theme="light"] textarea::placeholder,
+html.light input::placeholder,
+html.light textarea::placeholder {
+  color: #6b7280;
 }

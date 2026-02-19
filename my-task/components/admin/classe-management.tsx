@@ -68,7 +68,7 @@ export function ClasseManagement({ classes }: ClasseManagementProps) {
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+        <h2 className="text-2xl font-bold text-white light:text-gray-900">
           Gestion des Classes
         </h2>
         <Button onClick={openCreateModal}>
@@ -78,8 +78,8 @@ export function ClasseManagement({ classes }: ClasseManagementProps) {
       </div>
 
       {classes.length === 0 ? (
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-8 text-center">
-          <p className="text-gray-500 dark:text-gray-400">
+        <div className="bg-gray-800 light:bg-white rounded-xl shadow-sm border border-gray-700 light:border-gray-200 p-8 text-center">
+          <p className="text-gray-400 light:text-gray-500">
             Aucune classe créée pour le moment
           </p>
         </div>
@@ -88,22 +88,22 @@ export function ClasseManagement({ classes }: ClasseManagementProps) {
           {classes.map((classe) => (
             <div
               key={classe.id}
-              className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6"
+              className="bg-gray-800 light:bg-white rounded-xl shadow-sm border border-gray-700 light:border-gray-200 p-6"
             >
               <div className="flex items-start justify-between mb-4">
                 <div className="flex-1">
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                  <h3 className="text-lg font-semibold text-white light:text-gray-900">
                     {classe.name}
                   </h3>
                   {classe.description && (
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                    <p className="text-sm text-gray-400 light:text-gray-600 mt-1">
                       {classe.description}
                     </p>
                   )}
                 </div>
               </div>
 
-              <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-4">
+              <div className="flex items-center gap-2 text-sm text-gray-400 light:text-gray-500 mb-4">
                 <Users size={16} />
                 <span>
                   {classe._count.students} étudiant{classe._count.students !== 1 ? 's' : ''}
@@ -124,7 +124,7 @@ export function ClasseManagement({ classes }: ClasseManagementProps) {
                   variant="outline"
                   size="sm"
                   onClick={() => handleDelete(classe.id)}
-                  className="text-red-600 hover:text-red-700 dark:text-red-400"
+                  className="text-red-400 light:text-red-600 light:hover:text-red-700"
                 >
                   <Trash2 size={16} />
                 </Button>
@@ -145,7 +145,7 @@ export function ClasseManagement({ classes }: ClasseManagementProps) {
       >
         <form onSubmit={handleSubmit} className="space-y-4">
           {error && (
-            <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-600 dark:bg-red-900/20 dark:border-red-800 dark:text-red-400">
+            <div className="p-3 bg-red-900/20 border border-red-800 light:bg-red-50 light:border-red-200 rounded-lg text-sm text-red-400 light:text-red-600">
               {error}
             </div>
           )}
@@ -153,7 +153,7 @@ export function ClasseManagement({ classes }: ClasseManagementProps) {
           <div>
             <label
               htmlFor="name"
-              className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+              className="block text-sm font-medium text-gray-300 light:text-gray-700 mb-1"
             >
               Nom de la classe <span className="text-red-500">*</span>
             </label>
@@ -169,7 +169,7 @@ export function ClasseManagement({ classes }: ClasseManagementProps) {
           <div>
             <label
               htmlFor="description"
-              className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+              className="block text-sm font-medium text-gray-300 light:text-gray-700 mb-1"
             >
               Description (optionnel)
             </label>

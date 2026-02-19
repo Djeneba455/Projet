@@ -102,13 +102,13 @@ export function ReportGenerator({ tasks, categories, users, userRole }: ReportGe
 
       {/* Filters */}
       {reportType === 'tasks' && (
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+        <div className="bg-gray-800 light:bg-white rounded-xl shadow-sm border border-gray-700 light:border-gray-200 p-6">
+          <h3 className="text-lg font-semibold text-white light:text-gray-900 mb-4">
             Filtres (optionnel)
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-gray-300 light:text-gray-700 mb-1">
                 Date de début
               </label>
               <Input
@@ -118,7 +118,7 @@ export function ReportGenerator({ tasks, categories, users, userRole }: ReportGe
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-gray-300 light:text-gray-700 mb-1">
                 Date de fin
               </label>
               <Input
@@ -132,7 +132,7 @@ export function ReportGenerator({ tasks, categories, users, userRole }: ReportGe
       )}
 
       {/* Generate Button */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+      <div className="bg-gray-800 light:bg-white rounded-xl shadow-sm border border-gray-700 light:border-gray-200 p-6">
         <Button
           onClick={handleGenerateReport}
           disabled={isGenerating}
@@ -165,15 +165,15 @@ function ReportCard({
       onClick={onClick}
       className={`p-6 rounded-xl border-2 transition-all text-left ${
         isSelected
-          ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
-          : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-blue-300 dark:hover:border-blue-700'
+          ? 'border-blue-500 bg-blue-900/20 light:bg-blue-50'
+          : 'border-gray-700 light:border-gray-200 bg-gray-800 light:bg-white hover:border-blue-700 light:hover:border-blue-300'
       }`}
     >
-      <div className="text-blue-600 dark:text-blue-400 mb-3">{icon}</div>
-      <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+      <div className="text-blue-400 light:text-blue-600 mb-3">{icon}</div>
+      <h3 className="text-lg font-semibold text-white light:text-gray-900 mb-2">
         {title}
       </h3>
-      <p className="text-sm text-gray-600 dark:text-gray-400">{description}</p>
+      <p className="text-sm text-gray-400 light:text-gray-600">{description}</p>
     </button>
   )
 }

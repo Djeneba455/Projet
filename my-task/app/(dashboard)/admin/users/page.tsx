@@ -21,12 +21,12 @@ export default async function UsersPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div className="flex-1 min-w-0">
+          <h1 className="text-2xl sm:text-3xl font-bold text-white light:text-gray-900">
             Gestion des utilisateurs
           </h1>
-          <p className="text-gray-600 dark:text-gray-400 mt-1">
+          <p className="text-sm sm:text-base text-gray-400 light:text-gray-600 mt-1">
             {users.length} utilisateur{users.length !== 1 ? 's' : ''}
           </p>
         </div>

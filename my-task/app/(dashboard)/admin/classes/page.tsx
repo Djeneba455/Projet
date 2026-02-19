@@ -13,10 +13,10 @@ export default async function ClassesPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+        <h1 className="text-2xl sm:text-3xl font-bold text-white light:text-gray-900">
           Classes
         </h1>
-        <p className="text-gray-600 dark:text-gray-400 mt-1">
+        <p className="text-sm sm:text-base text-gray-400 light:text-gray-600 mt-1">
           Gérez les classes de votre établissement
         </p>
       </div>

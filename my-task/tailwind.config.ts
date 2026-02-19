@@ -6,7 +6,7 @@ const config: Config = {
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
-  darkMode: 'class', // Active le mode sombre via la classe 'dark'
+  // darkMode n'est plus nécessaire dans Tailwind v4 - les variantes sont définies dans CSS avec @custom-variant
   theme: {
     extend: {
       colors: {

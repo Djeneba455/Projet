@@ -23,13 +23,14 @@ export function Sidebar({ userRole }: SidebarProps) {
       {/* Mobile hamburger button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="lg:hidden fixed top-4 left-4 z-50 p-2 bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700"
+        className="lg:hidden fixed top-4 left-4 z-50 p-2 bg-gray-800 light:bg-white rounded-lg shadow-md border border-gray-700 light:border-gray-200 hover:bg-gray-700 light:hover:bg-gray-50 transition-colors"
         aria-label="Toggle menu"
+        aria-expanded={isOpen}
       >
         {isOpen ? (
-          <X size={24} className="text-gray-600 dark:text-gray-400" />
+          <X size={24} className="text-gray-400 light:text-gray-600" />
         ) : (
-          <Menu size={24} className="text-gray-600 dark:text-gray-400" />
+          <Menu size={24} className="text-gray-400 light:text-gray-600" />
         )}
       </button>
 
@@ -45,12 +46,13 @@ export function Sidebar({ userRole }: SidebarProps) {
       <aside
         className={`
           fixed lg:static top-0 left-0 h-screen w-64
-          bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700
-          transform transition-transform duration-300 z-40
+          bg-gray-800 light:bg-white border-r border-gray-700 light:border-gray-200
+          transform transition-all duration-300 ease-in-out z-40
+          shadow-lg light:shadow-gray-900/50
           ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
         `}
       >
-        <nav className="p-4 space-y-2 mt-16 lg:mt-0">
+        <nav className="p-4 space-y-2 mt-16 lg:mt-4 overflow-y-auto h-full pb-20 lg:pb-4">
           <NavLink 
             href="/dashboard" 
             icon={<LayoutDashboard size={20} />}
@@ -91,7 +93,7 @@ export function Sidebar({ userRole }: SidebarProps) {
           {(isTeacher || isAdmin) && (
             <>
               <div className="pt-4 pb-2">
-                <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider px-3">
+                <p className="text-xs font-semibold text-gray-400 light:text-gray-500 uppercase tracking-wider px-3">
                   Enseignant
                 </p>
               </div>
@@ -111,7 +113,7 @@ export function Sidebar({ userRole }: SidebarProps) {
           {isAdmin && (
             <>
               <div className="pt-4 pb-2">
-                <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider px-3">
+                <p className="text-xs font-semibold text-gray-400 light:text-gray-500 uppercase tracking-wider px-3">
                   Administration
                 </p>
               </div>
@@ -170,8 +172,8 @@ function NavLink({
       className={`
         flex items-center gap-3 px-3 py-2 rounded-lg transition-colors
         ${active 
-          ? 'bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' 
-          : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+          ? 'bg-blue-900/30 text-blue-400 light:bg-blue-50 light:text-blue-600' 
+          : 'text-gray-300 light:text-gray-700 hover:bg-gray-700 light:hover:bg-gray-100'
         }
       `}
     >

@@ -13,19 +13,20 @@ export default async function CalendarPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div className="flex-1 min-w-0">
+          <h1 className="text-2xl sm:text-3xl font-bold text-white light:text-gray-900">
             Calendrier
           </h1>
-          <p className="text-gray-600 dark:text-gray-400 mt-1">
+          <p className="text-sm sm:text-base text-gray-400 light:text-gray-600 mt-1">
             Vue d'ensemble de vos tâches avec échéances
           </p>
         </div>
-        <Link href="/tasks/new">
-          <Button>
+        <Link href="/tasks/new" className="w-full sm:w-auto">
+          <Button className="w-full sm:w-auto">
             <Plus size={18} className="mr-2" />
-            Nouvelle tâche
+            <span className="hidden xs:inline">Nouvelle tâche</span>
+            <span className="xs:hidden">Nouvelle</span>
           </Button>
         </Link>
       </div>
@@ -34,26 +35,26 @@ export default async function CalendarPage() {
       <CalendarView tasks={tasks} />
 
       {/* Legend */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4">
-        <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">
+      <div className="bg-gray-800 light:bg-white rounded-lg shadow-sm border border-gray-700 light:border-gray-200 p-4">
+        <h3 className="text-sm font-semibold text-white light:text-gray-900 mb-3">
           Légende
         </h3>
-        <div className="flex flex-wrap gap-4 text-sm">
+        <div className="flex flex-wrap gap-3 sm:gap-4 text-xs sm:text-sm">
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 rounded" style={{ backgroundColor: '#EF4444' }} />
-            <span className="text-gray-600 dark:text-gray-400">Urgente</span>
+            <div className="w-4 h-4 rounded flex-shrink-0" style={{ backgroundColor: '#EF4444' }} />
+            <span className="text-gray-400 light:text-gray-600">Urgente</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 rounded" style={{ backgroundColor: '#F59E0B' }} />
-            <span className="text-gray-600 dark:text-gray-400">Haute priorité</span>
+            <div className="w-4 h-4 rounded flex-shrink-0" style={{ backgroundColor: '#F59E0B' }} />
+            <span className="text-gray-400 light:text-gray-600">Haute priorité</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 rounded" style={{ backgroundColor: '#3B82F6' }} />
-            <span className="text-gray-600 dark:text-gray-400">Moyenne/Basse</span>
+            <div className="w-4 h-4 rounded flex-shrink-0" style={{ backgroundColor: '#3B82F6' }} />
+            <span className="text-gray-400 light:text-gray-600">Moyenne/Basse</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 rounded" style={{ backgroundColor: '#10B981' }} />
-            <span className="text-gray-600 dark:text-gray-400">Terminée</span>
+            <div className="w-4 h-4 rounded flex-shrink-0" style={{ backgroundColor: '#10B981' }} />
+            <span className="text-gray-400 light:text-gray-600">Terminée</span>
           </div>
         </div>
       </div>
