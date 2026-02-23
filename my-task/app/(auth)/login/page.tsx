@@ -3,12 +3,14 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { Eye, EyeOff } from 'lucide-react'
 import { loginAction } from '@/app/actions/auth'
 
 export default function LoginPage() {
   const router = useRouter()
   const [error, setError] = useState<string>('')
   const [isLoading, setIsLoading] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -72,15 +74,25 @@ export default function LoginPage() {
               >
                 Mot de passe
               </label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                required
-                autoComplete="current-password"
-                className="w-full px-4 py-3 border border-gray-600 light:border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-700 light:bg-white text-white light:text-gray-900 transition"
-                placeholder="••••••••"
-              />
+              <div className="relative">
+                <input
+                  id="password"
+                  name="password"
+                  type={showPassword ? 'text' : 'password'}
+                  required
+                  autoComplete="current-password"
+                  className="w-full px-4 py-3 pr-12 border border-gray-600 light:border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-700 light:bg-white text-white light:text-gray-900 transition"
+                  placeholder="••••••••"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-md text-gray-400 hover:text-gray-300 light:hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  aria-label={showPassword ? 'Masquer le mot de passe' : 'Afficher le mot de passe'}
+                >
+                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
+              </div>
             </div>
 
             <button
@@ -104,22 +116,7 @@ export default function LoginPage() {
             </p>
           </div>
 
-          <div className="mt-8 pt-6 border-t border-gray-700 light:border-gray-200">
-            <p className="text-xs text-gray-400 light:text-gray-500 text-center mb-3">
-              Comptes de test disponibles :
-            </p>
-            <div className="space-y-2 text-xs text-gray-400 light:text-gray-600">
-              <div className="bg-gray-700/50 light:bg-gray-50 p-3 rounded">
-                <strong>Étudiant :</strong> student1@example.com / student123
-              </div>
-              <div className="bg-gray-700/50 light:bg-gray-50 p-3 rounded">
-                <strong>Enseignant :</strong> teacher@example.com / teacher123
-              </div>
-              <div className="bg-gray-700/50 light:bg-gray-50 p-3 rounded">
-                <strong>Admin :</strong> admin@example.com / admin123
-              </div>
-            </div>
-          </div>
+        
         </div>
       </div>
     </div>

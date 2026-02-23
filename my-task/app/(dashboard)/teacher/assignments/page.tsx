@@ -16,7 +16,7 @@ export default async function TeacherAssignmentsPage() {
   const categories = categoriesResult.categories || []
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
+    <div className="max-w-4xl mx-auto w-full space-y-6 min-w-0">
       {/* Header */}
       <div>
         <h1 className="text-2xl sm:text-3xl font-bold text-white light:text-gray-900">

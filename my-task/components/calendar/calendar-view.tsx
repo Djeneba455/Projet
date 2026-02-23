@@ -80,13 +80,13 @@ export function CalendarView({ tasks }: CalendarViewProps) {
 
   return (
     <>
-      <div className="bg-gray-800 light:bg-white p-4 rounded-xl shadow-sm border border-gray-700 light:border-gray-200 calendar-container">
+      <div className="bg-gray-800 light:bg-white p-3 sm:p-4 rounded-xl shadow-sm border border-gray-700 light:border-gray-200 calendar-container overflow-x-auto">
         <Calendar
           localizer={localizer}
           events={events}
           startAccessor="start"
           endAccessor="end"
-          style={{ height: 600 }}
+          style={{ height: 'min(600px, 70vh)', minHeight: 320 }}
           eventPropGetter={eventStyleGetter}
           onSelectEvent={handleSelectEvent}
           messages={{

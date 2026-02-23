@@ -10,8 +10,8 @@ export function LogoutButton() {
   }
 
   return (
-    <Button variant="outline" size="sm" onClick={handleLogout}>
-      <LogOut size={16} className="mr-2" />
+    <Button variant="outline" size="sm" onClick={handleLogout} title="Déconnexion" aria-label="Déconnexion">
+      <LogOut size={16} className="md:mr-2" />
       <span className="hidden md:inline">Déconnexion</span>
     </Button>
   )

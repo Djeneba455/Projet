@@ -53,7 +53,7 @@ export function TaskCard({ task, isDragging }: TaskCardProps) {
         </div>
 
         {/* Title */}
-        <h3 className="font-semibold text-white light:text-gray-900 mb-2 pr-6">
+        <h3 className="font-semibold text-white light:text-gray-900 mb-2 pr-6 break-words">
           {task.title}
         </h3>
 

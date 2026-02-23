@@ -36,7 +36,7 @@ export default async function DashboardPage() {
   )
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 min-w-0">
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div className="flex-1 min-w-0">
@@ -50,8 +50,8 @@ export default async function DashboardPage() {
         <Link href="/tasks/new" className="w-full sm:w-auto">
           <Button className="w-full sm:w-auto">
             <Plus size={18} className="mr-2" />
-            <span className="hidden xs:inline">Nouvelle tâche</span>
-            <span className="xs:hidden">Nouvelle</span>
+            <span className="hidden sm:inline">Nouvelle tâche</span>
+            <span className="sm:hidden">Nouvelle</span>
           </Button>
         </Link>
       </div>
@@ -106,7 +106,7 @@ export default async function DashboardPage() {
                 >
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
-                      <h3 className="font-medium text-white light:text-gray-900">
+                      <h3 className="font-medium text-white light:text-gray-900 break-words">
                         {task.title}
                       </h3>
                       <div className="flex items-center gap-2 mt-2">

@@ -5,6 +5,7 @@ import { prisma } from '@/lib/prisma'
 import { loginSchema, registerSchema } from '@/lib/validations/user'
 import { hash } from 'bcryptjs'
 import { AuthError } from 'next-auth'
+import { ZodError } from 'zod'
 
 export async function loginAction(formData: FormData) {
   try {
@@ -74,6 +75,13 @@ export async function registerAction(formData: FormData) {
 
     return { success: true }
   } catch (error) {
+    if (error instanceof ZodError) {
+      const msg = error.errors.map((e) => e.message).join('. ')
+      return { error: msg }
+    }
+    if (error instanceof AuthError) {
+      return { error: 'Email ou mot de passe incorrect' }
+    }
     console.error('Registration error:', error)
     return { error: 'Erreur lors de la création du compte' }
   }

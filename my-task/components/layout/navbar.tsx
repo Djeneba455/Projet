@@ -40,14 +40,14 @@ export async function Navbar() {
                   </div>
                 </div>
 
-                <Link href="/profile" className="hidden md:block">
-                  <Button variant="outline" size="sm" className="hidden md:flex">
-                    <User size={16} className="mr-2" />
-                    <span className="hidden lg:inline">Profil</span>
+                <Link href="/profile" title="Mon profil" aria-label="Mon profil">
+                  <Button variant="outline" size="sm" className="flex items-center">
+                    <User size={16} className="md:mr-2" />
+                    <span className="hidden md:inline">Profil</span>
                   </Button>
                 </Link>
 
-                <div className="hidden md:block">
+                <div>
                   <LogoutButton />
                 </div>
               </>

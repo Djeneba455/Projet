@@ -42,7 +42,7 @@ export default async function TaskDetailPage({
     task.creatorId === session?.user?.id
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
+    <div className="max-w-4xl mx-auto w-full space-y-6 min-w-0">
       {/* Header */}
       <div>
         <Link

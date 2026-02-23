@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My-Task - Documentation Essentielle</title>
+  <style>
+    body { font-family: 'Segoe UI', Arial, sans-serif; line-height: 1.6; max-width: 800px; margin: 40px auto; padding: 20px; }
+    h1 { color: #1e3a5f; border-bottom: 2px solid #3b82f6; padding-bottom: 10px; }
+    h2 { color: #2563eb; margin-top: 24px; }
+    h3 { color: #3b82f6; margin-top: 16px; }
+    table { border-collapse: collapse; width: 100%; margin: 16px 0; }
+    th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+    th { background: #3b82f6; color: white; }
+    code { background: #f1f5f9; padding: 2px 6px; border-radius: 4px; }
+    pre { background: #f8fafc; padding: 16px; overflow-x: auto; border-radius: 4px; }
+    .meta { color: #64748b; font-size: 0.9em; margin-bottom: 24px; }
+    ul { margin: 8px 0; }
+    li { margin: 4px 0; }
+  </style>
+</head>
+<body>
+
+<h1>MY-TASK — Points essentiels de la documentation</h1>
+<p class="meta">Application de gestion des tâches étudiants | Version 1.0 | Février 2025</p>
+
+<h2>1. Présentation du projet</h2>
+<p><strong>Objectif :</strong> Application fullstack de gestion des tâches pour un contexte éducatif (étudiants, enseignants, administrateurs).</p>
+<p><strong>Stack principale :</strong> Next.js 16 | React 19 | TypeScript | Prisma | PostgreSQL</p>
+<p><strong>Fonctionnalités clés :</strong> Authentification, tableau Kanban drag & drop, calendrier, notifications, export PDF, mode sombre/clair, responsive.</p>
+
+<h2>2. Architecture</h2>
+<p><strong>Couches :</strong></p>
+<ul>
+  <li><strong>Présentation :</strong> React, Tailwind CSS</li>
+  <li><strong>Application :</strong> Server Actions, API Routes, Middleware</li>
+  <li><strong>Données :</strong> Prisma ORM, PostgreSQL</li>
+</ul>
+<p><strong>Flux :</strong> Server Components pour le chargement → Server Actions pour les mutations → Revalidation du cache.</p>
+
+<h2>3. Modèle de données (Prisma)</h2>
+<p><strong>Entités principales :</strong></p>
+<ul>
+  <li><strong>User :</strong> id, name, email, password, role (STUDENT/TEACHER/ADMIN), classeId</li>
+  <li><strong>Task :</strong> title, description, status (TODO/IN_PROGRESS/COMPLETED), priority (LOW/MEDIUM/HIGH/URGENT), dueDate, creatorId, assigneeId, categoryId</li>
+  <li><strong>Category :</strong> name, color, description</li>
+  <li><strong>Classe :</strong> name, description</li>
+  <li><strong>Notification :</strong> userId, title, message, read, type</li>
+</ul>
+
+<h2>4. Authentification (NextAuth.js v5)</h2>
+<ul>
+  <li><strong>Provider :</strong> Credentials (email + mot de passe)</li>
+  <li><strong>Session :</strong> JWT</li>
+  <li><strong>Sécurité :</strong> bcrypt pour le hash des mots de passe</li>
+  <li><strong>Pages publiques :</strong> /, /login, /register</li>
+  <li><strong>Protection :</strong> vérification auth() dans le layout dashboard</li>
+</ul>
+
+<h2>5. Rôles et permissions</h2>
+<table>
+  <tr><th>Rôle</th><th>Accès</th></tr>
+  <tr><td>STUDENT</td><td>Ses tâches + tâches assignées</td></tr>
+  <tr><td>TEACHER</td><td>Ses tâches + assignation aux étudiants + catégories</td></tr>
+  <tr><td>ADMIN</td><td>Gestion utilisateurs, classes, catégories</td></tr>
+</table>
+
+<h2>6. Modules et fonctionnalités</h2>
+<ul>
+  <li><strong>Dashboard :</strong> Statistiques, prochaines échéances</li>
+  <li><strong>Tâches :</strong> Kanban, filtres, recherche, CRUD</li>
+  <li><strong>Calendrier :</strong> Vue mensuelle (react-big-calendar)</li>
+  <li><strong>Rapports :</strong> Export PDF (jspdf)</li>
+  <li><strong>Notifications :</strong> Liste, marquage lu, Cron toutes les 6h</li>
+  <li><strong>Profil :</strong> Modification nom, email, mot de passe</li>
+  <li><strong>Admin :</strong> CRUD utilisateurs, classes, catégories</li>
+  <li><strong>Enseignant :</strong> Assignation de tâches aux étudiants</li>
+</ul>
+
+<h2>7. Structure du projet</h2>
+<pre>app/           → (auth), (dashboard), actions/, api/
+components/    → admin, layout, task, ui, calendar, etc.
+lib/           → auth, prisma, utils, validations, pdf-generator
+prisma/        → schema.prisma, seed.ts</pre>
+
+<h2>8. Installation</h2>
+<pre>npm install
+npx prisma generate
+npx prisma migrate dev --name init
+npx prisma db seed
+npm run dev</pre>
+<p><strong>Variables d'environnement :</strong> DATABASE_URL, NEXTAUTH_SECRET, NEXTAUTH_URL</p>
+<p><strong>Comptes test :</strong> admin@example.com / admin123 | student1@example.com / student123</p>
+
+<h2>9. Déploiement (Vercel)</h2>
+<p>PostgreSQL (Vercel Postgres, Supabase, Neon) | Variables d'environnement configurées | <code>prisma migrate deploy</code> après le premier déploiement</p>
+
+<h2>10. Sécurité</h2>
+<p>Mots de passe hashés (bcrypt) | Validation Zod côté serveur | Prisma (protection injection SQL) | Permissions par rôle</p>
+
+<hr>
+<p style="color:#64748b; font-size:0.9em;">Document généré pour le projet My-Task. Ouvrir ce fichier dans Word puis « Enregistrer sous » en .docx ou PDF.</p>
+
+</body>
+</html>

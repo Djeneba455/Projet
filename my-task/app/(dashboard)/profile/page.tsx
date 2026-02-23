@@ -46,7 +46,7 @@ export default async function ProfilePage() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 min-w-0">
       <div>
         <h1 className="text-2xl sm:text-3xl font-bold text-white light:text-gray-900">
           Mon Profil

@@ -49,7 +49,7 @@ export function Modal({
       {/* Modal */}
       <div
         className={cn(
-          'relative z-10 w-full rounded-xl bg-gray-800 light:bg-white p-6 shadow-xl mx-4',
+          'relative z-10 w-full max-h-[90vh] flex flex-col rounded-xl bg-gray-800 light:bg-white p-4 sm:p-6 shadow-xl mx-4 overflow-hidden',
           {
             'max-w-sm': size === 'sm',
             'max-w-md': size === 'md',
@@ -60,9 +60,9 @@ export function Modal({
       >
         {/* Header */}
         {(title || description) && (
-          <div className="mb-4">
+          <div className="mb-4 flex-shrink-0">
             {title && (
-              <h2 className="text-xl font-semibold text-white light:text-gray-900">
+              <h2 className="text-lg sm:text-xl font-semibold text-white light:text-gray-900 break-words">
                 {title}
               </h2>
             )}
@@ -75,7 +75,9 @@ export function Modal({
         )}
 
         {/* Content */}
-        {children}
+        <div className="overflow-y-auto min-h-0 flex-1 -mx-4 sm:-mx-6 px-4 sm:px-6">
+          {children}
+        </div>
       </div>
     </div>
   )

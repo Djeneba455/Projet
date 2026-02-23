@@ -20,7 +20,7 @@ export default async function NewTaskPage() {
   const students = studentsResult?.students || []
 
   return (
-    <div className="max-w-2xl mx-auto space-y-6">
+    <div className="max-w-2xl mx-auto w-full space-y-6">
       {/* Header */}
       <div>
         <Link
@@ -30,13 +30,13 @@ export default async function NewTaskPage() {
           <ArrowLeft size={16} className="mr-1" />
           Retour aux tâches
         </Link>
-        <h1 className="text-3xl font-bold text-white light:text-gray-900">
+        <h1 className="text-2xl sm:text-3xl font-bold text-white light:text-gray-900">
           Nouvelle tâche
         </h1>
       </div>
 
       {/* Form */}
-      <div className="bg-gray-800 light:bg-white rounded-xl shadow-sm border border-gray-700 light:border-gray-200 p-6">
+      <div className="bg-gray-800 light:bg-white rounded-xl shadow-sm border border-gray-700 light:border-gray-200 p-4 sm:p-6">
         <TaskForm categories={categories} students={students} />
       </div>
     </div>

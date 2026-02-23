@@ -89,42 +89,40 @@ export function NotificationsList({ notifications }: NotificationsListProps) {
           {notifications.map((notification) => (
             <div
               key={notification.id}
-              className={`bg-gray-800 light:bg-white rounded-lg shadow-sm border p-4 transition-all ${
+              className={`bg-gray-800 light:bg-white rounded-lg shadow-sm border p-3 sm:p-4 transition-all ${
                 notification.read
                   ? 'border-gray-700 light:border-gray-200'
                   : 'border-blue-800 light:border-blue-200 bg-blue-900/10 light:bg-blue-50/50'
               }`}
             >
-              <div className="flex gap-4">
-                {/* Icon */}
-                <div className="flex-shrink-0 mt-1">
-                  {getNotificationIcon(notification.type)}
-                </div>
-
-                {/* Content */}
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-start justify-between gap-4 mb-2">
-                    <h3 className="font-semibold text-white light:text-gray-900">
-                      {notification.title}
-                    </h3>
-                    {!notification.read && (
-                      <Badge variant="default" className="flex-shrink-0">
-                        Nouveau
-                      </Badge>
-                    )}
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                {/* Icon + Content */}
+                <div className="flex gap-3 sm:gap-4 flex-1 min-w-0">
+                  <div className="flex-shrink-0 mt-0.5 sm:mt-1">
+                    {getNotificationIcon(notification.type)}
                   </div>
-                  
-                  <p className="text-sm text-gray-400 light:text-gray-600 mb-2">
-                    {notification.message}
-                  </p>
-                  
-                  <p className="text-xs text-gray-500">
-                    {formatDateTime(notification.createdAt)}
-                  </p>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex flex-wrap items-start justify-between gap-2 mb-1 sm:mb-2">
+                      <h3 className="font-semibold text-white light:text-gray-900 break-words">
+                        {notification.title}
+                      </h3>
+                      {!notification.read && (
+                        <Badge variant="default" className="flex-shrink-0">
+                          Nouveau
+                        </Badge>
+                      )}
+                    </div>
+                    <p className="text-sm text-gray-400 light:text-gray-600 mb-1 sm:mb-2 break-words">
+                      {notification.message}
+                    </p>
+                    <p className="text-xs text-gray-500">
+                      {formatDateTime(notification.createdAt)}
+                    </p>
+                  </div>
                 </div>
 
                 {/* Actions */}
-                <div className="flex items-start gap-2">
+                <div className="flex items-center justify-end sm:justify-start gap-2 flex-shrink-0 border-t border-gray-700/50 light:border-gray-200/50 pt-2 sm:pt-0 sm:border-0">
                   {!notification.read && (
                     <Button
                       variant="ghost"
