@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button'
 import { User } from 'lucide-react'
 import { NotificationBell } from './notification-bell'
 import { ThemeToggle } from './theme-toggle'
+import { LanguageToggle } from './language-toggle'
 import { LogoutButton } from './logout-button'
 import { getRoleLabel } from '@/lib/utils'
 import Link from 'next/link'
@@ -26,6 +27,7 @@ export async function Navbar() {
             {session?.user && (
               <>
                 <ThemeToggle />
+                <LanguageToggle />
                 <NotificationBell />
                 
                 <div className="hidden lg:flex items-center gap-2 text-sm">

@@ -116,3 +116,27 @@ html.light input::placeholder,
 html.light textarea::placeholder {
   color: #6b7280;
 }
+
+/* Surcharges Google Translate pour garder l'aspect premium */
+.skiptranslate {
+  display: none !important;
+}
+body {
+  top: 0px !important;
+}
+.goog-te-banner-frame {
+  display: none !important;
+}
+.goog-te-menu-value {
+  display: none !important;
+}
+.goog-te-gadget {
+  display: none !important;
+}
+iframe.goog-te-menu-frame {
+  display: none !important;
+}
+#google_translate_element {
+  display: none !important;
+}
+
