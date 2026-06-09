@@ -1,19 +1,25 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 
 // GET /api/messages/conversations/[id] - Récupère les messages d'une discussion et les marque comme lus
-export async function GET(
-  req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+export const GET = auth(async function GET(
+  req,
+  context
 ) {
   try {
-    const session = await auth()
+    const session = req.auth
     if (!session?.user) {
       return NextResponse.json({ error: 'Non authentifié' }, { status: 401 })
     }
 
-    const { id: conversationId } = await params
+    const params = await (context?.params as Promise<{ id: string }>)
+    const conversationId = params?.id
+
+    if (!conversationId) {
+      return NextResponse.json({ error: 'ID de discussion manquant' }, { status: 400 })
+    }
+
     const currentUserId = session.user.id
 
     // Vérifier si l'utilisateur est participant de cette conversation
@@ -68,22 +74,28 @@ export async function GET(
     return NextResponse.json(messages)
   } catch (error) {
     console.error('Error fetching messages:', error)
-    return NextResponse.json({ error: 'Erreur serveur lors du chargement des messages' }, { status: 500 })
+    return NextResponse.json({ error: 'Erreur serveur lors de la récupération des messages' }, { status: 500 })
   }
-}
+})
 
 // POST /api/messages/conversations/[id] - Envoie un message dans la discussion
-export async function POST(
-  req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+export const POST = auth(async function POST(
+  req,
+  context
 ) {
   try {
-    const session = await auth()
+    const session = req.auth
     if (!session?.user) {
       return NextResponse.json({ error: 'Non authentifié' }, { status: 401 })
     }
 
-    const { id: conversationId } = await params
+    const params = await (context?.params as Promise<{ id: string }>)
+    const conversationId = params?.id
+
+    if (!conversationId) {
+      return NextResponse.json({ error: 'ID de discussion manquant' }, { status: 400 })
+    }
+
     const currentUserId = session.user.id
     const body = await req.json()
     const { content } = body
@@ -141,4 +153,4 @@ export async function POST(
     console.error('Error sending message:', error)
     return NextResponse.json({ error: 'Erreur serveur lors de l\'envoi du message' }, { status: 500 })
   }
-}
+})

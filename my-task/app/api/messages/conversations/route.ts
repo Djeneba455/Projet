@@ -5,9 +5,9 @@ import { prisma } from '@/lib/prisma'
 export const dynamic = 'force-dynamic'
 
 // GET /api/messages/conversations - Liste les conversations de l'utilisateur
-export async function GET() {
+export const GET = auth(async function GET(req) {
   try {
-    const session = await auth()
+    const session = req.auth
     if (!session?.user) {
       return NextResponse.json({ error: 'Non authentifié' }, { status: 401 })
     }
@@ -78,12 +78,12 @@ export async function GET() {
     console.error('Error fetching conversations:', error)
     return NextResponse.json({ error: 'Erreur serveur lors de la récupération des discussions' }, { status: 500 })
   }
-}
+})
 
 // POST /api/messages/conversations - Crée une conversation (DM ou Groupe)
-export async function POST(req: NextRequest) {
+export const POST = auth(async function POST(req) {
   try {
-    const session = await auth()
+    const session = req.auth
     if (!session?.user) {
       return NextResponse.json({ error: 'Non authentifié' }, { status: 401 })
     }
@@ -216,4 +216,4 @@ export async function POST(req: NextRequest) {
     console.error('Error creating conversation:', error)
     return NextResponse.json({ error: 'Erreur serveur lors de la création de la discussion' }, { status: 500 })
   }
-}
+})

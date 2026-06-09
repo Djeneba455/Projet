@@ -4,9 +4,9 @@ import { prisma } from '@/lib/prisma'
 
 export const dynamic = 'force-dynamic'
 
-export async function GET() {
+export const GET = auth(async function GET(req) {
   try {
-    const session = await auth()
+    const session = req.auth
     if (!session?.user) {
       return NextResponse.json({ error: 'Non authentifié' }, { status: 401 })
     }
@@ -81,4 +81,4 @@ export async function GET() {
     console.error('Error fetching chat users:', error)
     return NextResponse.json({ error: 'Erreur serveur lors de la récupération des contacts' }, { status: 500 })
   }
-}
+})
