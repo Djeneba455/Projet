@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { LayoutDashboard, ListTodo, Calendar, FileText, Users, Tags, UserPlus, School, Menu, X } from 'lucide-react'
+import { LayoutDashboard, ListTodo, Calendar, FileText, Users, Tags, UserPlus, School, Menu, X, MessageSquare } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 
 interface SidebarProps {
@@ -87,6 +87,15 @@ export function Sidebar({ userRole }: SidebarProps) {
             onClick={closeSidebar}
           >
             Rapports
+          </NavLink>
+
+          <NavLink 
+            href="/messages" 
+            icon={<MessageSquare size={20} />}
+            active={pathname === '/messages'}
+            onClick={closeSidebar}
+          >
+            Messagerie
           </NavLink>
 
           {/* Teacher Section */}
