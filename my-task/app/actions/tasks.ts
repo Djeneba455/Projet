@@ -321,17 +321,32 @@ export async function deleteTask(id: string) {
 
     const task = await prisma.task.findUnique({
       where: { id },
+      include: {
+        creator: {
+          select: {
+            role: true,
+          },
+        },
+      },
     })
 
     if (!task) {
       return { error: 'Tâche introuvable' }
     }
 
+    const isStudent = session.user.role === 'STUDENT'
+    const creatorRole = task.creator?.role
+
     // Only creator, teachers, and admins can delete
-    const canDelete =
+    let canDelete =
       session.user.role === 'ADMIN' ||
       session.user.role === 'TEACHER' ||
       task.creatorId === session.user.id
+
+    // Students cannot delete tasks assigned by Teachers or Admins
+    if (isStudent && (creatorRole === 'TEACHER' || creatorRole === 'ADMIN')) {
+      canDelete = false
+    }
 
     if (!canDelete) {
       return { error: 'Vous n\'avez pas la permission de supprimer cette tâche' }

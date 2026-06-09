@@ -2,7 +2,7 @@ import { getTaskById } from '@/app/actions/tasks'
 import { getCategories } from '@/app/actions/categories'
 import { getStudents } from '@/app/actions/users'
 import { auth } from '@/lib/auth'
-import { notFound } from 'next/navigation'
+import { notFound, redirect } from 'next/navigation'
 import { TaskForm } from '@/components/task/task-form'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -16,10 +16,11 @@ export const dynamic = 'force-dynamic'
 export default async function TaskDetailPage({
   params,
 }: {
-  params: { id: string }
+  params: Promise<{ id: string }>
 }) {
+  const { id } = await params
   const session = await auth()
-  const taskResult = await getTaskById(params.id)
+  const taskResult = await getTaskById(id)
 
   if (taskResult.error || !taskResult.task) {
     notFound()
@@ -41,6 +42,19 @@ export default async function TaskDetailPage({
     session?.user?.role === 'TEACHER' ||
     task.creatorId === session?.user?.id
 
+  const isStudent = session?.user?.role === 'STUDENT'
+  const creatorRole = task.creator?.role
+
+  let canDelete =
+    session?.user?.role === 'ADMIN' ||
+    session?.user?.role === 'TEACHER' ||
+    task.creatorId === session?.user?.id
+
+  // Les étudiants ne peuvent pas supprimer les tâches créées/assignées par des enseignants ou admins
+  if (isStudent && (creatorRole === 'TEACHER' || creatorRole === 'ADMIN')) {
+    canDelete = false
+  }
+
   return (
     <div className="max-w-4xl mx-auto w-full space-y-6 min-w-0">
       {/* Header */}
@@ -56,6 +70,20 @@ export default async function TaskDetailPage({
           <h1 className="text-2xl sm:text-3xl font-bold text-white light:text-gray-900">
             Détails de la tâche
           </h1>
+          {canDelete && (
+            <form
+              action={async () => {
+                'use server'
+                await deleteTask(task.id)
+                redirect('/tasks')
+              }}
+            >
+              <Button type="submit" variant="destructive" className="w-full sm:w-auto">
+                <Trash2 size={16} className="mr-2" />
+                Supprimer la tâche
+              </Button>
+            </form>
+          )}
         </div>
       </div>
 
