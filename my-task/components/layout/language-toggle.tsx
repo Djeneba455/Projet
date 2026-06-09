@@ -8,7 +8,9 @@ const LANGUAGES = [
   { code: 'en', label: 'English' },
   { code: 'es', label: 'Español' },
   { code: 'de', label: 'Deutsch' },
-  { code: 'it', label: 'Italiano' }
+  { code: 'it', label: 'Italiano' },
+  { code: 'ar', label: 'العربية (Arabe)' },
+  { code: 'bm', label: 'Bamanankan (Bambara)' }
 ]
 
 export function LanguageToggle() {
