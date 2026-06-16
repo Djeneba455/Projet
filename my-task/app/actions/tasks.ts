@@ -172,6 +172,7 @@ export async function createTask(data: FormData) {
         title: 'Nouvelle tâche assignée',
         message: `${session.user.name} vous a assigné la tâche: ${task.title}`,
         type: 'info',
+        actorId: session.user.id,
       })
     }
 
@@ -249,6 +250,7 @@ export async function updateTask(id: string, data: FormData) {
         title: 'Tâche complétée',
         message: `${session.user.name} a complété la tâche: ${task.title}`,
         type: 'success',
+        actorId: session.user.id,
       })
     }
 
@@ -299,6 +301,7 @@ export async function updateTaskStatus(id: string, status: 'TODO' | 'IN_PROGRESS
         title: 'Tâche complétée',
         message: `${session.user.name} a complété la tâche: ${task.title}`,
         type: 'success',
+        actorId: session.user.id,
       })
     }
 

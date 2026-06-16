@@ -4,6 +4,7 @@ export const profileSchema = z.object({
   name: z.string().min(2, 'Le nom doit contenir au moins 2 caractères'),
   email: z.string().email('Email invalide'),
   classeId: z.string().optional().nullable(),
+  telegram: z.string().optional().nullable(),
 })
 
 export const passwordSchema = z.object({

@@ -9,6 +9,7 @@ export async function createNotification(data: {
   title: string
   message: string
   type?: string
+  actorId?: string
 }) {
   try {
     const notification = await prisma.notification.create({
@@ -19,6 +20,51 @@ export async function createNotification(data: {
         type: data.type || 'info',
       },
     })
+
+    // Trigger n8n webhook asynchronously if configured
+    const webhookUrl = process.env.N8N_WEBHOOK_URL
+    if (webhookUrl) {
+      (async () => {
+        try {
+          const recipient = await prisma.user.findUnique({
+            where: { id: data.userId },
+            select: { id: true, name: true, email: true, role: true, telegram: true }
+          })
+          
+          let actor = null
+          let actorPrenom = ''
+          let actorNom = ''
+          if (data.actorId) {
+            actor = await prisma.user.findUnique({
+              where: { id: data.actorId },
+              select: { id: true, name: true, email: true, role: true, telegram: true }
+            })
+            if (actor?.name) {
+              const parts = actor.name.trim().split(/\s+/)
+              actorPrenom = parts[0] || ''
+              actorNom = parts.slice(1).join(' ') || ''
+            }
+          }
+
+          await fetch(webhookUrl, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              notification,
+              recipient,
+              actor,
+              prenom: actorPrenom,
+              nom: actorNom,
+              telegram: recipient?.telegram || '',
+            }),
+          })
+        } catch (webhookError) {
+          console.error('Failed to send webhook to n8n:', webhookError)
+        }
+      })()
+    }
 
     revalidatePath('/dashboard')
     return { success: true, notification }

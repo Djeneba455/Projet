@@ -88,6 +88,21 @@ export function ProfileForm({ user, classes }: ProfileFormProps) {
           />
         </div>
 
+        <div>
+          <label
+            htmlFor="telegram"
+            className="block text-sm font-medium text-gray-300 light:text-gray-700 mb-1"
+          >
+            Numéro ou Identifiant Telegram (ex: @username ou +33612345678)
+          </label>
+          <Input
+            id="telegram"
+            name="telegram"
+            defaultValue={user.telegram || ''}
+            placeholder="@username ou +33612345678"
+          />
+        </div>
+
         {(user.role === 'STUDENT' || user.role === 'TEACHER') && classes.length > 0 && (
           <div>
             <label
