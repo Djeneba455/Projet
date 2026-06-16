@@ -36,6 +36,7 @@ export async function registerAction(formData: FormData) {
       email: formData.get('email') as string,
       password: formData.get('password') as string,
       confirmPassword: formData.get('confirmPassword') as string,
+      telegram: (formData.get('telegram') as string) || null,
     }
 
     const validatedData = registerSchema.parse(data)
@@ -63,6 +64,7 @@ export async function registerAction(formData: FormData) {
         password: hashedPassword,
         role: 'STUDENT', // Default role
         classeId: classeId || undefined,
+        telegram: validatedData.telegram,
       },
     })
 

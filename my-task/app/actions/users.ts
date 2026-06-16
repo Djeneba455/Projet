@@ -25,6 +25,7 @@ export async function getUsers() {
         role: true,
         createdAt: true,
         classeId: true,
+        telegram: true,
         classe: {
           select: {
             name: true,
@@ -164,6 +165,7 @@ export async function createUser(data: FormData) {
     const password = data.get('password') as string
     const role = (data.get('role') as 'STUDENT' | 'TEACHER' | 'ADMIN') || 'STUDENT'
     const classeId = data.get('classeId') as string || null
+    const telegram = data.get('telegram') as string || null
 
     // Check if user already exists
     const existingUser = await prisma.user.findUnique({
@@ -185,6 +187,7 @@ export async function createUser(data: FormData) {
         password: hashedPassword,
         role,
         classeId: classeId || undefined,
+        telegram: telegram || undefined,
       },
     })
 
@@ -212,6 +215,7 @@ export async function updateUser(userId: string, data: FormData) {
     const email = data.get('email') as string
     const role = data.get('role') as 'STUDENT' | 'TEACHER' | 'ADMIN'
     const classeId = data.get('classeId') as string
+    const telegram = data.get('telegram') as string
 
     // Cannot change own role to non-admin
     if (userId === session.user.id && role !== 'ADMIN') {
@@ -237,6 +241,7 @@ export async function updateUser(userId: string, data: FormData) {
     if (name) updateData.name = name
     if (email) updateData.email = email
     if (role) updateData.role = role
+    if (telegram !== undefined) updateData.telegram = telegram || null
     
     // Handle classeId: empty string means remove class
     if (classeId === '') {

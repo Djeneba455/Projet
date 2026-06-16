@@ -183,6 +183,22 @@ export default function RegisterPage() {
               )}
             </div>
 
+            <div>
+              <label
+                htmlFor="telegram"
+                className="block text-sm font-medium text-gray-300 light:text-gray-700 mb-2"
+              >
+                Numéro ou Identifiant Telegram (optionnel)
+              </label>
+              <input
+                id="telegram"
+                name="telegram"
+                type="text"
+                className="w-full px-4 py-3 border border-gray-600 light:border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-700 light:bg-white text-white light:text-gray-900 transition"
+                placeholder="@username ou +33612345678"
+              />
+            </div>
+
             {classes.length > 0 && (
               <div>
                 <label
