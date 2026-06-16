@@ -6,11 +6,6 @@ import { Globe, Check } from 'lucide-react'
 const LANGUAGES = [
   { code: 'fr', label: 'Français' },
   { code: 'en', label: 'English' },
-  { code: 'es', label: 'Español' },
-  { code: 'de', label: 'Deutsch' },
-  { code: 'it', label: 'Italiano' },
-  { code: 'ar', label: 'العربية (Arabe)' },
-  { code: 'bm', label: 'Bamanankan (Bambara)' }
 ]
 
 export function LanguageToggle() {
@@ -51,6 +46,7 @@ export function LanguageToggle() {
       new (window as any).google.translate.TranslateElement(
         {
           pageLanguage: 'fr',
+          includedLanguages: 'fr,en',
           autoDisplay: false,
         },
         'google_translate_element'
