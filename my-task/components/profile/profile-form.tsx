@@ -93,13 +93,13 @@ export function ProfileForm({ user, classes }: ProfileFormProps) {
             htmlFor="telegram"
             className="block text-sm font-medium text-gray-300 light:text-gray-700 mb-1"
           >
-            Numéro ou Identifiant Telegram (ex: @username ou +33612345678)
+            Nom d'utilisateur Telegram (ex: @username)
           </label>
           <Input
             id="telegram"
             name="telegram"
             defaultValue={user.telegram || ''}
-            placeholder="@username ou +33612345678"
+            placeholder="@username"
           />
         </div>
 

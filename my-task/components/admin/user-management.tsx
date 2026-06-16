@@ -235,9 +235,9 @@ export function UserManagement({ users, classes }: UserManagementProps) {
 
           <div>
             <label className="block text-sm font-medium text-gray-300 light:text-gray-700 mb-1">
-              Numéro/Identifiant Telegram (optionnel)
+              Nom d'utilisateur Telegram (ex: @username - optionnel)
             </label>
-            <Input name="telegram" placeholder="@username ou +33612345678" />
+            <Input name="telegram" placeholder="@username" />
           </div>
 
           <div>
@@ -341,12 +341,12 @@ export function UserManagement({ users, classes }: UserManagementProps) {
 
             <div>
               <label className="block text-sm font-medium text-gray-300 light:text-gray-700 mb-1">
-                Numéro/Identifiant Telegram (optionnel)
+                Nom d'utilisateur Telegram (ex: @username - optionnel)
               </label>
               <Input
                 name="telegram"
                 defaultValue={editingUser.telegram || ''}
-                placeholder="@username ou +33612345678"
+                placeholder="@username"
               />
             </div>
 
