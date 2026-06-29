@@ -1,0 +1,102 @@
+{
+  "name": "My-Task Workflow 1: Telegram Linker",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "id": "telegram-trigger-node-id",
+      "name": "Telegram Trigger",
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1,
+      "position": [
+        250,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "// 1. On récupère le texte envoyé par Telegram\nconst texteRecu = $json.message.text || \"\";\nconst chatIdTelegram = $json.message.chat.id;\n\n// 2. On utilise une expression régulière pour extraire ce qui vient après \"/start \"\nconst capture = texteRecu.match(/\\/start (.+)/);\nconst idUtilisateurSite = capture ? capture[1] : null;\n\n// 3. On renvoie un résultat propre pour le nœud suivant\nreturn {\n  user_id: idUtilisateurSite,\n  chat_id: chatIdTelegram\n};"
+      },
+      "id": "code-node-id",
+      "name": "Code",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        480,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "=UPDATE \"User\" SET telegram_chat_id = '{{ $json.chat_id }}' WHERE id = '{{ $json.user_id }}';"
+      },
+      "id": "postgres-node-id",
+      "name": "PostgreSQL",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [
+        700,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "sendMessage",
+        "chatId": "={{ $node[\"Code\"].json.chat_id }}",
+        "text": "🔔 Connexion réussie !\n\nVotre compte a été correctement lié à l'application. Vous recevrez désormais toutes vos notifications importantes ici-même.",
+        "additionalFields": {}
+      },
+      "id": "telegram-send-node-id",
+      "name": "Telegram",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        920,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "PostgreSQL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PostgreSQL": {
+      "main": [
+        [
+          {
+            "node": "Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {},
+  "active": false
+}

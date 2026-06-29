@@ -28,7 +28,7 @@ export async function createNotification(data: {
         try {
           const recipient = await prisma.user.findUnique({
             where: { id: data.userId },
-            select: { id: true, name: true, email: true, role: true, telegram: true }
+            select: { id: true, name: true, email: true, role: true, telegram: true, telegramChatId: true }
           })
           
           let actor = null
@@ -58,6 +58,7 @@ export async function createNotification(data: {
               prenom: actorPrenom,
               nom: actorNom,
               telegram: recipient?.telegram || '',
+              telegram_chat_id: recipient?.telegramChatId || '',
             }),
           })
         } catch (webhookError) {
