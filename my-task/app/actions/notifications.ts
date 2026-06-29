@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { sendNotificationEmail } from '@/lib/mailer'
 
 export async function createNotification(data: {
   userId: string
@@ -21,16 +22,17 @@ export async function createNotification(data: {
       },
     })
 
+    // Get recipient email/details
+    const recipient = await prisma.user.findUnique({
+      where: { id: data.userId },
+      select: { id: true, name: true, email: true, role: true, telegram: true, telegramChatId: true }
+    })
+
     // Trigger n8n webhook asynchronously if configured
     const webhookUrl = process.env.N8N_WEBHOOK_URL
-    if (webhookUrl) {
+    if (webhookUrl && recipient) {
       (async () => {
         try {
-          const recipient = await prisma.user.findUnique({
-            where: { id: data.userId },
-            select: { id: true, name: true, email: true, role: true, telegram: true, telegramChatId: true }
-          })
-          
           let actor = null
           let actorPrenom = ''
           let actorNom = ''
@@ -63,6 +65,17 @@ export async function createNotification(data: {
           })
         } catch (webhookError) {
           console.error('Failed to send webhook to n8n:', webhookError)
+        }
+      })()
+    }
+
+    // Send email notification asynchronously if SMTP is configured
+    if (recipient?.email) {
+      (async () => {
+        try {
+          await sendNotificationEmail(recipient.email, data.title, data.message)
+        } catch (emailError) {
+          console.error('Failed to send notification email:', emailError)
         }
       })()
     }
