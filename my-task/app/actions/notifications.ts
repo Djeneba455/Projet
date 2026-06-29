@@ -28,46 +28,7 @@ export async function createNotification(data: {
       select: { id: true, name: true, email: true, role: true, telegram: true, telegramChatId: true }
     })
 
-    // Trigger n8n webhook asynchronously if configured
-    const webhookUrl = process.env.N8N_WEBHOOK_URL
-    if (webhookUrl && recipient) {
-      (async () => {
-        try {
-          let actor = null
-          let actorPrenom = ''
-          let actorNom = ''
-          if (data.actorId) {
-            actor = await prisma.user.findUnique({
-              where: { id: data.actorId },
-              select: { id: true, name: true, email: true, role: true, telegram: true }
-            })
-            if (actor?.name) {
-              const parts = actor.name.trim().split(/\s+/)
-              actorPrenom = parts[0] || ''
-              actorNom = parts.slice(1).join(' ') || ''
-            }
-          }
 
-          await fetch(webhookUrl, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              notification,
-              recipient,
-              actor,
-              prenom: actorPrenom,
-              nom: actorNom,
-              telegram: recipient?.telegram || '',
-              telegram_chat_id: recipient?.telegramChatId || '',
-            }),
-          })
-        } catch (webhookError) {
-          console.error('Failed to send webhook to n8n:', webhookError)
-        }
-      })()
-    }
 
     // Send email notification asynchronously if SMTP is configured
     if (recipient?.email) {
