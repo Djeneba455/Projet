@@ -21,7 +21,6 @@ export async function getCurrentUser() {
         email: true,
         role: true,
         classeId: true,
-        telegram: true,
         classe: {
           select: {
             id: true,
@@ -54,7 +53,6 @@ export async function updateProfile(data: FormData) {
       name: data.get('name') as string,
       email: data.get('email') as string,
       classeId: (data.get('classeId') as string) || null,
-      telegram: (data.get('telegram') as string) || null,
     }
 
     const validatedData = profileSchema.parse(formData)
@@ -79,7 +77,6 @@ export async function updateProfile(data: FormData) {
         name: validatedData.name,
         email: validatedData.email,
         classeId: validatedData.classeId || undefined,
-        telegram: validatedData.telegram,
       },
     })
 

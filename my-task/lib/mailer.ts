@@ -1,6 +1,45 @@
 import nodemailer from 'nodemailer'
 
-// Create a reusable transporter using SMTP settings
+function parseEmailAddress(header: string): { name?: string; email: string } {
+  if (header.includes('<') && header.includes('>')) {
+    const parts = header.split('<')
+    return {
+      name: parts[0].replace(/"/g, '').trim() || undefined,
+      email: parts[1].replace(/>/g, '').trim(),
+    }
+  }
+  return { email: header.trim() }
+}
+
+function parseRecipient(to: string): { name?: string; email: string } {
+  return parseEmailAddress(to)
+}
+
+function getBrevoSender(): { name: string; email: string } | null {
+  const defaultName = process.env.BREVO_SENDER_NAME || 'My-Task Notifications'
+
+  if (process.env.BREVO_SENDER_EMAIL) {
+    return {
+      name: defaultName,
+      email: process.env.BREVO_SENDER_EMAIL,
+    }
+  }
+
+  const fromHeader = process.env.SMTP_FROM
+  if (fromHeader) {
+    const parsed = parseEmailAddress(fromHeader)
+    // L'adresse @smtp-brevo.com est un identifiant SMTP, pas un expéditeur vérifié pour l'API
+    if (!parsed.email.endsWith('@smtp-brevo.com')) {
+      return {
+        name: parsed.name || defaultName,
+        email: parsed.email,
+      }
+    }
+  }
+
+  return null
+}
+
 const getTransporter = () => {
   const host = process.env.SMTP_HOST || 'smtp.gmail.com'
   const port = parseInt(process.env.SMTP_PORT || '587')
@@ -15,6 +54,87 @@ const getTransporter = () => {
       pass: process.env.SMTP_PASS,
     },
   })
+}
+
+async function sendViaBrevoApi(
+  brevoApiKey: string,
+  to: string,
+  title: string,
+  message: string,
+  htmlContent: string,
+  actionUrl: string
+) {
+  const sender = getBrevoSender()
+  if (!sender) {
+    throw new Error(
+      'BREVO_SENDER_EMAIL non configuré (ou SMTP_FROM pointe vers @smtp-brevo.com). ' +
+        'Utilisez une adresse expéditeur vérifiée dans Brevo.'
+    )
+  }
+
+  const recipient = parseRecipient(to)
+
+  const response = await fetch('https://api.brevo.com/v3/smtp/email', {
+    method: 'POST',
+    headers: {
+      accept: 'application/json',
+      'api-key': brevoApiKey,
+      'content-type': 'application/json',
+    },
+    body: JSON.stringify({
+      sender,
+      to: [
+        {
+          email: recipient.email,
+          ...(recipient.name ? { name: recipient.name } : {}),
+        },
+      ],
+      subject: `🔔 My-Task : ${title}`,
+      textContent: `${title}\n\n${message}\n\nSe connecter au site : ${actionUrl}`,
+      htmlContent,
+    }),
+  })
+
+  if (!response.ok) {
+    const errorText = await response.text()
+    throw new Error(`Brevo API returned error status ${response.status}: ${errorText}`)
+  }
+
+  const data = await response.json()
+  console.log(`[mailer] Email envoyé via Brevo API à ${recipient.email}:`, data)
+  return data
+}
+
+async function sendViaSmtp(
+  to: string,
+  title: string,
+  message: string,
+  htmlContent: string,
+  actionUrl: string
+) {
+  const smtpUser = process.env.SMTP_USER
+  const smtpPass = process.env.SMTP_PASS
+
+  if (!smtpUser || !smtpPass) {
+    console.warn(
+      '[mailer] Aucune configuration mail valide (BREVO_API_KEY + BREVO_SENDER_EMAIL ou SMTP_USER/SMTP_PASS). Email ignoré.'
+    )
+    return null
+  }
+
+  const from = process.env.SMTP_FROM || `"My-Task Notifications" <${smtpUser}>`
+  const mailOptions = {
+    from,
+    to,
+    subject: `🔔 My-Task : ${title}`,
+    text: `${title}\n\n${message}\n\nSe connecter au site : ${actionUrl}`,
+    html: htmlContent,
+  }
+
+  const transporter = getTransporter()
+  const result = await transporter.sendMail(mailOptions)
+  console.log(`[mailer] Email envoyé via SMTP à ${to}:`, result.messageId)
+  return result
 }
 
 /**
@@ -155,85 +275,12 @@ export async function sendNotificationEmail(to: string, title: string, message: 
   `
 
   if (brevoApiKey) {
-    // Parse sender name and email from SMTP_FROM or default
-    const fromHeader = process.env.SMTP_FROM || '"My-Task Notifications" <b05353001@smtp-brevo.com>'
-    let senderName = 'My-Task Notifications'
-    let senderEmail = 'b05353001@smtp-brevo.com'
-
-    if (fromHeader.includes('<') && fromHeader.includes('>')) {
-      const parts = fromHeader.split('<')
-      senderName = parts[0].replace(/"/g, '').trim() || 'My-Task'
-      senderEmail = parts[1].replace(/>/g, '').trim()
-    } else {
-      senderEmail = fromHeader.trim()
-    }
-
-    let recipientEmail = to
-    let recipientName: string | undefined = undefined
-
-    if (to.includes('<') && to.includes('>')) {
-      const parts = to.split('<')
-      recipientName = parts[0].replace(/"/g, '').trim()
-      recipientEmail = parts[1].replace(/>/g, '').trim()
-    }
-
     try {
-      const response = await fetch('https://api.brevo.com/v3/smtp/email', {
-        method: 'POST',
-        headers: {
-          'accept': 'application/json',
-          'api-key': brevoApiKey,
-          'content-type': 'application/json'
-        },
-        body: JSON.stringify({
-          sender: {
-            name: senderName,
-            email: senderEmail
-          },
-          to: [
-            {
-              email: recipientEmail,
-              ...(recipientName ? { name: recipientName } : {})
-            }
-          ],
-          subject: `🔔 My-Task : ${title}`,
-          textContent: `${title}\n\n${message}\n\nSe connecter au site : ${actionUrl}`,
-          htmlContent: htmlContent
-        })
-      })
-
-      if (!response.ok) {
-        const errorText = await response.text()
-        throw new Error(`Brevo API returned error status ${response.status}: ${errorText}`)
-      }
-
-      const data = await response.json()
-      console.log('Email sent successfully via Brevo API:', data)
-      return data
+      return await sendViaBrevoApi(brevoApiKey, to, title, message, htmlContent, actionUrl)
     } catch (apiError) {
-      console.error('Brevo API send email failure:', apiError)
-      throw apiError
+      console.error('[mailer] Échec Brevo API, tentative SMTP en secours:', apiError)
     }
   }
 
-  // Fallback to Nodemailer SMTP
-  const smtpUser = process.env.SMTP_USER
-  const smtpPass = process.env.SMTP_PASS
-
-  if (!smtpUser || !smtpPass) {
-    console.warn('Neither Brevo API Key nor SMTP credentials configured. Skipping email notification.')
-    return null
-  }
-
-  const from = process.env.SMTP_FROM || `"My-Task Notifications" <${smtpUser}>`
-  const mailOptions = {
-    from,
-    to,
-    subject: `🔔 My-Task : ${title}`,
-    text: `${title}\n\n${message}\n\nSe connecter au site : ${actionUrl}`,
-    html: htmlContent,
-  }
-
-  const transporter = getTransporter()
-  return transporter.sendMail(mailOptions)
+  return sendViaSmtp(to, title, message, htmlContent, actionUrl)
 }

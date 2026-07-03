@@ -243,7 +243,32 @@ export async function updateTask(id: string, data: FormData) {
       },
     })
 
-    // Notify assignee if task was completed
+    // Notify assignee if task was newly assigned or updated (and it's not the actor themselves)
+    if (task.assigneeId && task.assigneeId !== session.user.id) {
+      if (task.assigneeId !== existingTask.assigneeId) {
+        // Newly assigned
+        await createNotification({
+          userId: task.assigneeId,
+          title: 'Nouvelle tâche assignée',
+          message: `${session.user.name} vous a assigné la tâche: ${task.title}`,
+          type: 'info',
+          actorId: session.user.id,
+        })
+      } else {
+        // Task details updated (only notify if status did not just change to COMPLETED)
+        if (task.status !== 'COMPLETED' || existingTask.status === 'COMPLETED') {
+          await createNotification({
+            userId: task.assigneeId,
+            title: 'Tâche mise à jour',
+            message: `${session.user.name} a mis à jour la tâche: ${task.title}`,
+            type: 'info',
+            actorId: session.user.id,
+          })
+        }
+      }
+    }
+
+    // Notify creator if task was completed by assignee
     if (task.status === 'COMPLETED' && task.creatorId !== session.user.id && task.creatorId) {
       await createNotification({
         userId: task.creatorId,

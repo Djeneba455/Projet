@@ -235,13 +235,6 @@ export function UserManagement({ users, classes }: UserManagementProps) {
 
           <div>
             <label className="block text-sm font-medium text-gray-300 light:text-gray-700 mb-1">
-              Nom d'utilisateur Telegram (ex: @username - optionnel)
-            </label>
-            <Input name="telegram" placeholder="@username" />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-300 light:text-gray-700 mb-1">
               Rôle
             </label>
             <Select 
@@ -336,17 +329,6 @@ export function UserManagement({ users, classes }: UserManagementProps) {
                 required
                 defaultValue={editingUser.email}
                 placeholder="jean@example.com"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-300 light:text-gray-700 mb-1">
-                Nom d'utilisateur Telegram (ex: @username - optionnel)
-              </label>
-              <Input
-                name="telegram"
-                defaultValue={editingUser.telegram || ''}
-                placeholder="@username"
               />
             </div>
 

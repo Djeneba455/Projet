@@ -25,7 +25,7 @@ export async function createNotification(data: {
     // Get recipient email/details
     const recipient = await prisma.user.findUnique({
       where: { id: data.userId },
-      select: { id: true, name: true, email: true, role: true, telegram: true, telegramChatId: true }
+      select: { id: true, name: true, email: true, role: true }
     })
 
 
@@ -36,10 +36,17 @@ export async function createNotification(data: {
         const toRecipient = recipient.name
           ? `"${recipient.name}" <${recipient.email}>`
           : recipient.email
-        await sendNotificationEmail(toRecipient, data.title, data.message)
+        const emailResult = await sendNotificationEmail(toRecipient, data.title, data.message)
+        if (!emailResult) {
+          console.warn(
+            `[notifications] Email non envoyé pour ${recipient.email} — vérifier BREVO_API_KEY, BREVO_SENDER_EMAIL ou SMTP_*`
+          )
+        }
       } catch (emailError) {
-        console.error('Failed to send notification email:', emailError)
+        console.error(`[notifications] Échec envoi email à ${recipient.email}:`, emailError)
       }
+    } else {
+      console.warn(`[notifications] Pas d'adresse email pour l'utilisateur ${data.userId}`)
     }
 
     revalidatePath('/dashboard')
