@@ -30,15 +30,16 @@ export async function createNotification(data: {
 
 
 
-    // Send email notification asynchronously if SMTP is configured
+    // Send email notification (awaited to prevent early termination in serverless environments)
     if (recipient?.email) {
-      (async () => {
-        try {
-          await sendNotificationEmail(recipient.email, data.title, data.message)
-        } catch (emailError) {
-          console.error('Failed to send notification email:', emailError)
-        }
-      })()
+      try {
+        const toRecipient = recipient.name
+          ? `"${recipient.name}" <${recipient.email}>`
+          : recipient.email
+        await sendNotificationEmail(toRecipient, data.title, data.message)
+      } catch (emailError) {
+        console.error('Failed to send notification email:', emailError)
+      }
     }
 
     revalidatePath('/dashboard')
