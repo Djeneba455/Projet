@@ -1,5 +1,22 @@
 import nodemailer from 'nodemailer'
 
+function getAppUrl(): string {
+  const fromEnv =
+    process.env.NEXTAUTH_URL ||
+    process.env.APP_URL ||
+    process.env.NEXT_PUBLIC_APP_URL
+
+  if (fromEnv) {
+    return fromEnv.replace(/\/$/, '')
+  }
+
+  if (process.env.VERCEL_URL) {
+    return `https://${process.env.VERCEL_URL}`
+  }
+
+  return 'http://localhost:3000'
+}
+
 function parseEmailAddress(header: string): { name?: string; email: string } {
   if (header.includes('<') && header.includes('>')) {
     const parts = header.split('<')
@@ -142,7 +159,7 @@ async function sendViaSmtp(
  */
 export async function sendNotificationEmail(to: string, title: string, message: string) {
   const brevoApiKey = process.env.BREVO_API_KEY
-  const actionUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000'
+  const actionUrl = getAppUrl()
 
   const htmlContent = `
 <!DOCTYPE html>
