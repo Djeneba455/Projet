@@ -21,15 +21,7 @@ const getTransporter = () => {
  * Sends a notification email to a user with a premium HTML template.
  */
 export async function sendNotificationEmail(to: string, title: string, message: string) {
-  const smtpUser = process.env.SMTP_USER
-  const smtpPass = process.env.SMTP_PASS
-
-  if (!smtpUser || !smtpPass) {
-    console.warn('SMTP credentials not configured in environment. Skipping email notification.')
-    return null
-  }
-
-  const from = process.env.SMTP_FROM || `"My-Task Notifications" <${smtpUser}>`
+  const brevoApiKey = process.env.BREVO_API_KEY
   const actionUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000'
 
   const htmlContent = `
@@ -162,6 +154,78 @@ export async function sendNotificationEmail(to: string, title: string, message: 
 </html>
   `
 
+  if (brevoApiKey) {
+    // Parse sender name and email from SMTP_FROM or default
+    const fromHeader = process.env.SMTP_FROM || '"My-Task Notifications" <b05353001@smtp-brevo.com>'
+    let senderName = 'My-Task Notifications'
+    let senderEmail = 'b05353001@smtp-brevo.com'
+
+    if (fromHeader.includes('<') && fromHeader.includes('>')) {
+      const parts = fromHeader.split('<')
+      senderName = parts[0].replace(/"/g, '').trim() || 'My-Task'
+      senderEmail = parts[1].replace(/>/g, '').trim()
+    } else {
+      senderEmail = fromHeader.trim()
+    }
+
+    let recipientEmail = to
+    let recipientName: string | undefined = undefined
+
+    if (to.includes('<') && to.includes('>')) {
+      const parts = to.split('<')
+      recipientName = parts[0].replace(/"/g, '').trim()
+      recipientEmail = parts[1].replace(/>/g, '').trim()
+    }
+
+    try {
+      const response = await fetch('https://api.brevo.com/v3/smtp/email', {
+        method: 'POST',
+        headers: {
+          'accept': 'application/json',
+          'api-key': brevoApiKey,
+          'content-type': 'application/json'
+        },
+        body: JSON.stringify({
+          sender: {
+            name: senderName,
+            email: senderEmail
+          },
+          to: [
+            {
+              email: recipientEmail,
+              ...(recipientName ? { name: recipientName } : {})
+            }
+          ],
+          subject: `🔔 My-Task : ${title}`,
+          textContent: `${title}\n\n${message}\n\nSe connecter au site : ${actionUrl}`,
+          htmlContent: htmlContent
+        })
+      })
+
+      if (!response.ok) {
+        const errorText = await response.text()
+        throw new Error(`Brevo API returned error status ${response.status}: ${errorText}`)
+      }
+
+      const data = await response.json()
+      console.log('Email sent successfully via Brevo API:', data)
+      return data
+    } catch (apiError) {
+      console.error('Brevo API send email failure:', apiError)
+      throw apiError
+    }
+  }
+
+  // Fallback to Nodemailer SMTP
+  const smtpUser = process.env.SMTP_USER
+  const smtpPass = process.env.SMTP_PASS
+
+  if (!smtpUser || !smtpPass) {
+    console.warn('Neither Brevo API Key nor SMTP credentials configured. Skipping email notification.')
+    return null
+  }
+
+  const from = process.env.SMTP_FROM || `"My-Task Notifications" <${smtpUser}>`
   const mailOptions = {
     from,
     to,

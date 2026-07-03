@@ -13,16 +13,80 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 1.1,
       "position": [
-        250,
-        300
+        200,
+        220
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "manual-trigger-node-id",
+      "name": "On clicking 'Test workflow'",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        200,
+        400
       ]
     },
     {
       "parameters": {
-        "fromEmail": "no-reply@example.com",
-        "toEmail": "={{ $json.body.recipient.email }}",
-        "subject": "=🔔 My-Task : {{ $json.body.notification.title }}",
-        "html": "=<!DOCTYPE html>\n<html>\n<head>\n  <meta charset=\"utf-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>{{ $json.body.notification.title }}</title>\n  <style>\n    body {\n      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;\n      background-color: #f3f4f6;\n      margin: 0;\n      padding: 0;\n      -webkit-font-smoothing: antialiased;\n    }\n    .wrapper {\n      width: 100%;\n      background-color: #f3f4f6;\n      padding: 40px 20px;\n      box-sizing: border-box;\n    }\n    .container {\n      max-width: 600px;\n      margin: 0 auto;\n      background-color: #ffffff;\n      border-radius: 16px;\n      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);\n      overflow: hidden;\n      border: 1px solid #e5e7eb;\n    }\n    .header {\n      background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);\n      padding: 32px;\n      text-align: center;\n      color: #ffffff;\n    }\n    .header h1 {\n      margin: 0;\n      font-size: 24px;\n      font-weight: 700;\n      letter-spacing: -0.025em;\n    }\n    .header .icon {\n      font-size: 40px;\n      margin-bottom: 12px;\n      display: inline-block;\n    }\n    .content {\n      padding: 32px;\n      color: #374151;\n      line-height: 1.6;\n    }\n    .content h2 {\n      margin-top: 0;\n      font-size: 20px;\n      font-weight: 600;\n      color: #111827;\n      letter-spacing: -0.025em;\n    }\n    .content p {\n      font-size: 16px;\n      margin-bottom: 24px;\n    }\n    .card-message {\n      background-color: #f9fafb;\n      border-left: 4px solid #4f46e5;\n      padding: 20px;\n      border-radius: 0 8px 8px 0;\n      font-size: 15px;\n      color: #4b5563;\n      margin-bottom: 28px;\n    }\n    .cta-container {\n      text-align: center;\n      margin-bottom: 8px;\n    }\n    .cta-button {\n      display: inline-block;\n      background-color: #4f46e5;\n      color: #ffffff !important;\n      text-decoration: none;\n      padding: 14px 28px;\n      font-size: 16px;\n      font-weight: 600;\n      border-radius: 8px;\n      transition: background-color 0.2s ease;\n      box-shadow: 0 4px 6px rgba(79, 70, 229, 0.15);\n    }\n    .footer {\n      background-color: #f9fafb;\n      padding: 24px 32px;\n      text-align: center;\n      font-size: 12px;\n      color: #9ca3af;\n      border-top: 1px solid #e5e7eb;\n    }\n    .footer a {\n      color: #4f46e5;\n      text-decoration: none;\n    }\n  </style>\n</head>\n<body>\n  <div class=\"wrapper\">\n    <div class=\"container\">\n      <div class=\"header\">\n        <div class=\"icon\">✉️</div>\n        <h1>Notification par E-mail</h1>\n      </div>\n      <div class=\"content\">\n        <h2>{{ $json.body.notification.title }}</h2>\n        <p>Bonjour {{ $json.body.recipient.name }},</p>\n        <p>Vous avez reçu une nouvelle notification sur votre espace My-Task :</p>\n        <div class=\"card-message\">\n          {{ $json.body.notification.message }}\n        </div>\n        <div class=\"cta-container\">\n          <a href=\"{{ $json.body.actionUrl || 'http://localhost:3000' }}\" class=\"cta-button\">Accéder à mon espace</a>\n        </div>\n      </div>\n      <div class=\"footer\">\n        Cet e-mail automatique a été envoyé par <a href=\"{{ $json.body.actionUrl || 'http://localhost:3000' }}\">My-Task</a>.<br>\n        Veuillez ne pas y répondre directement.\n      </div>\n    </div>\n  </div>\n</body>\n</html>",
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "recipient.name",
+              "value": "Armand"
+            },
+            {
+              "name": "recipient.email",
+              "value": "armand@example.com"
+            },
+            {
+              "name": "notification.title",
+              "value": "Nouvelle tâche assignée"
+            },
+            {
+              "name": "notification.message",
+              "value": "Bonjour Armand, vous avez été assigné à la tâche \"Finaliser la présentation du projet\" par M. Martin. Date d'échéance : 5 juillet 2026."
+            },
+            {
+              "name": "actionUrl",
+              "value": "http://localhost:3000/dashboard"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "set-mock-data-node-id",
+      "name": "Set Mock Data",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        380,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "// Normalize data from either Webhook or Manual/Set Trigger\nconst body = $json.body || {};\n\nconst recipient = {\n  name: body.recipient?.name || $json.recipient?.name || 'Utilisateur',\n  email: body.recipient?.email || $json.recipient?.email || 'user@example.com'\n};\n\nconst notification = {\n  title: body.notification?.title || $json.notification?.title || 'Notification My-Task',\n  message: body.notification?.message || $json.notification?.message || 'Vous avez reçu une mise à jour sur votre espace.'\n};\n\nconst actionUrl = body.actionUrl || $json.actionUrl || 'http://localhost:3000';\n\nreturn {\n  json: {\n    recipient,\n    notification,\n    actionUrl\n  }\n};"
+      },
+      "id": "normalize-data-node-id",
+      "name": "Normalize Data",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        560,
+        310
+      ]
+    },
+    {
+      "parameters": {
+        "fromEmail": "b05353001@smtp-brevo.com",
+        "toEmail": "={{ $json.recipient.email }}",
+        "subject": "=🔔 My-Task : {{ $json.notification.title }}",
+        "text": "=Bonjour {{ $json.recipient.name }},\n\nVous avez reçu une nouvelle notification sur votre espace My-Task :\n\n{{ $json.notification.message }}\n\nAccéder à mon espace : {{ $json.actionUrl }}\n\nCordialement,\nL'équipe My-Task",
+        "html": "=Bonjour <b>{{ $json.recipient.name }}</b>,<br><br>Vous avez reçu une nouvelle notification sur votre espace My-Task :<br><br><i>{{ $json.notification.message }}</i><br><br><a href=\"{{ $json.actionUrl }}\">Accéder à mon espace</a><br><br>Cordialement,<br>L'équipe My-Task",
         "options": {}
       },
       "id": "email-send-node-id",
@@ -30,13 +94,46 @@
       "type": "n8n-nodes-base.emailSend",
       "typeVersion": 2.1,
       "position": [
-        500,
-        300
+        780,
+        310
       ]
     }
   ],
   "connections": {
     "Webhook Trigger": {
+      "main": [
+        [
+          {
+            "node": "Normalize Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On clicking 'Test workflow'": {
+      "main": [
+        [
+          {
+            "node": "Set Mock Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Mock Data": {
+      "main": [
+        [
+          {
+            "node": "Normalize Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize Data": {
       "main": [
         [
           {
