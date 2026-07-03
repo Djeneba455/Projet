@@ -31,12 +31,13 @@ export async function createNotification(data: {
 
 
     // Send email notification (awaited to prevent early termination in serverless environments)
+    let emailResult: unknown = null
     if (recipient?.email) {
       try {
         const toRecipient = recipient.name
           ? `"${recipient.name}" <${recipient.email}>`
           : recipient.email
-        const emailResult = await sendNotificationEmail(toRecipient, data.title, data.message)
+        emailResult = await sendNotificationEmail(toRecipient, data.title, data.message)
         if (!emailResult) {
           console.warn(
             `[notifications] Email non envoyé pour ${recipient.email} — vérifier BREVO_API_KEY, BREVO_SENDER_EMAIL ou SMTP_*`
@@ -49,8 +50,13 @@ export async function createNotification(data: {
       console.warn(`[notifications] Pas d'adresse email pour l'utilisateur ${data.userId}`)
     }
 
-    revalidatePath('/dashboard')
-    return { success: true, notification }
+    try {
+      revalidatePath('/dashboard')
+    } catch (revalidateError) {
+      console.warn('[notifications] revalidatePath ignoré hors contexte Next.js:', revalidateError)
+    }
+
+    return { success: true, notification, emailSent: !!emailResult }
   } catch (error) {
     console.error('Create notification error:', error)
     return { error: 'Erreur lors de la création de la notification' }
